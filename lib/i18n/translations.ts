@@ -102,6 +102,58 @@ export const translations = {
       }
     },
 
+    // Success Page
+    success: {
+      title: "Payment Successful!",
+      subtitle: "Toplane Mastery Unlocked!",
+      orderComplete: "Your coaching order is complete",
+      nextSteps: "Next Steps to Toplane Glory:",
+      checkEmail: "Check your email for detailed instructions and next steps",
+      contactInfo: "You'll receive an email within the next few minutes with:",
+      plans: {
+        simple: {
+          title: "Simple Plan Activated",
+          instructions: [
+            "Send your OP.GG profile link",
+            "Upload 1 game replay file",
+            "You'll receive detailed written analysis within 24-48h"
+          ],
+          emailSubject: "How to submit your game for analysis"
+        },
+        medium: {
+          title: "Medium Plan Activated", 
+          instructions: [
+            "Send your OP.GG profile link",
+            "Upload 2 game replay files", 
+            "You'll receive comprehensive analysis + champion pool advice within 24h"
+          ],
+          emailSubject: "How to submit your games and profile for analysis"
+        },
+        premium: {
+          title: "Premium Plan Activated",
+          instructions: [
+            "Calendly booking link for your 1-hour coaching session",
+            "Pre-session preparation guidelines",
+            "Discord server invite for the call"
+          ],
+          emailSubject: "Your 1-hour coaching session details"
+        },
+        'premium-plus': {
+          title: "Premium+ Plan Activated",
+          instructions: [
+            "Calendly booking link for your 1.5-hour coaching session", 
+            "Pre-session preparation guidelines",
+            "Discord server invite for the call",
+            "Live game spectating setup instructions"
+          ],
+          emailSubject: "Your 1.5-hour premium coaching session details"
+        }
+      },
+      backToHome: "Back to Home",
+      thankYou: "Thank you for choosing Azzinoth Coaching!",
+      support: "Need help? Contact us at coaching@azzinoth.com"
+    },
+
     // Footer
     footer: {
       title: "AZZINOTH COACHING",
@@ -208,6 +260,58 @@ export const translations = {
         passion: "Le gaming n'est pas juste mon hobby - c'est ma passion et je veux en vivre. Ce qui me motive le plus, c'est partager mes connaissances et aider les autres à s'améliorer. Je crois que mon approche unique du jeu résonne avec les joueurs qui veulent trouver leur propre manière d'approcher le jeu..",
         philosophy: "Mon style de coaching se concentre sur l'amélioration des connaissances macro, la conaissance des matchups, et le perfectionnement d'une stratégie simple - les mêmes principes qui m'ont aidé à dominer dans les arènes WoW et à climb si rapidement sur League."
       }
+    },
+
+    // Success Page
+    success: {
+      title: "Paiement Réussi !",
+      subtitle: "Maîtrise de la Toplane Débloquée !",
+      orderComplete: "Votre commande de coaching est terminée",
+      nextSteps: "Prochaines Étapes vers la Gloire Toplane :",
+      checkEmail: "Vérifiez votre email pour les instructions détaillées et prochaines étapes",
+      contactInfo: "Vous recevrez un email dans les prochaines minutes avec :",
+      plans: {
+        simple: {
+          title: "Plan Simple Activé",
+          instructions: [
+            "Envoyez le lien de votre profil OP.GG",
+            "Uploadez 1 fichier replay de partie",
+            "Vous recevrez une analyse écrite détaillée sous 24-48h"
+          ],
+          emailSubject: "Comment soumettre votre partie pour analyse"
+        },
+        medium: {
+          title: "Plan Classique Activé", 
+          instructions: [
+            "Envoyez le lien de votre profil OP.GG",
+            "Uploadez 2 fichiers replay de parties", 
+            "Vous recevrez une analyse complète + conseils champion pool sous 24h"
+          ],
+          emailSubject: "Comment soumettre vos parties et profil pour analyse"
+        },
+        premium: {
+          title: "Plan Premium Activé",
+          instructions: [
+            "Lien Calendly pour votre session coaching d'1 heure",
+            "Instructions de préparation pré-session",
+            "Invitation serveur Discord pour l'appel"
+          ],
+          emailSubject: "Détails de votre session coaching d'1 heure"
+        },
+        'premium-plus': {
+          title: "Plan Premium+ Activé",
+          instructions: [
+            "Lien Calendly pour votre session coaching d'1h30", 
+            "Instructions de préparation pré-session",
+            "Invitation serveur Discord pour l'appel",
+            "Instructions setup spectating partie en direct"
+          ],
+          emailSubject: "Détails de votre session coaching premium d'1h30"
+        }
+      },
+      backToHome: "Retour Accueil",
+      thankYou: "Merci d'avoir choisi Azzinoth Coaching !",
+      support: "Besoin d'aide ? Contactez-nous à coaching@azzinoth.com"
     },
 
     // Footer
