@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       // Here you could send emails, update databases, etc.
       break;
     case 'checkout.session.completed':
-      const session = event.data.object as Stripe.CheckoutSession;
+      const session = event.data.object as Stripe.Checkout.Session;
       console.log(`Checkout session completed: ${session.id}`);
       // Handle completed coaching plan purchase
       break;
