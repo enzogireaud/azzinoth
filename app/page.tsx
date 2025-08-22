@@ -1,0 +1,290 @@
+'use client';
+
+import { Check, Star, Zap, Shield, Swords, Crown } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/context';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+
+
+
+export default function HomePage() {
+  const { t } = useLanguage();
+
+  const plans = [
+    {
+      id: 'simple' as const,
+      name: t.plans.simple.name,
+      price: '15€',
+      description: t.plans.simple.description,
+      icon: Shield,
+      features: t.plans.simple.features,
+      popular: false
+    },
+    {
+      id: 'medium' as const,
+      name: t.plans.medium.name,
+      price: '30€',
+      description: t.plans.medium.description,
+      icon: Swords,
+      features: t.plans.medium.features,
+      popular: false
+    },
+    {
+      id: 'premium' as const,
+      name: t.plans.premium.name,
+      price: '50€',
+      description: t.plans.premium.description,
+      icon: Zap,
+      features: t.plans.premium.features,
+      popular: true,
+      hasBooking: true
+    },
+    {
+      id: 'premium-plus' as const,
+      name: t.plans.premiumPlus.name,
+      price: '75€',
+      description: t.plans.premiumPlus.description,
+      icon: Crown,
+      features: t.plans.premiumPlus.features,
+      popular: false,
+      hasBooking: true
+    }
+  ];
+
+  return (
+    <main className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
+        style={{
+          backgroundImage: `url('/images/background.webp')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundAttachment: 'fixed'
+        }}
+      />
+      
+      {/* Overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-gray-900/60 to-black/70"></div>
+
+      {/* Header */}
+      <header className="relative z-10 pt-8 pb-12">
+        {/* Language Switcher */}
+        <div className="absolute top-6 right-6 z-20">
+          <LanguageSwitcher />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8">
+          <div className="flex items-center justify-center mb-6">
+            <Swords className="h-16 w-16 text-cyan-400 mr-4" />
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 via-teal-300 to-green-400 bg-clip-text text-transparent">
+              {t.title}
+            </h1>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-3">
+            {t.subtitle}
+          </h2>
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="bg-gradient-to-r from-cyan-500 to-teal-400 text-black px-4 py-2 rounded-full font-bold text-sm">
+              {t.badges.masterTier}
+            </div>
+            <div className="bg-gradient-to-r from-orange-600 to-red-500 text-white px-4 py-2 rounded-full font-bold text-sm">
+              {t.badges.toplaneSpealist}
+            </div>
+          </div>
+          <p className="text-xl text-cyan-100 max-w-4xl mx-auto leading-relaxed">
+            {t.heroDescription}
+          </p>
+        </div>
+      </header>
+
+      {/* Pricing Plans */}
+      <section className="relative z-10 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+              <span className="text-cyan-400">{t.plansTitle}</span>
+            </h2>
+            <p className="text-xl text-cyan-100 max-w-4xl mx-auto">
+              {t.plansSubtitle}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {plans.map((plan) => {
+              const IconComponent = plan.icon;
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-sm border-2 rounded-2xl shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 p-6 group flex flex-col h-full ${
+                    plan.popular 
+                      ? 'border-cyan-400 shadow-cyan-500/30' 
+                      : 'border-gray-600 hover:border-cyan-500/50'
+                  }`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-gradient-to-r from-cyan-500 to-teal-400 text-black px-6 py-2 rounded-full text-sm font-bold flex items-center gap-2">
+                        <Star className="h-4 w-4 fill-current" />
+                        {t.mostPopular}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="text-center mb-8">
+                      <div className="flex justify-center mb-4">
+                        <div className="p-4 bg-gradient-to-br from-cyan-500/20 to-teal-500/10 rounded-xl border border-cyan-400/30">
+                          <IconComponent className="h-10 w-10 text-cyan-400" />
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                        {plan.name}
+                      </h3>
+                      <div className="text-3xl font-bold text-cyan-400 mb-3">{plan.price}</div>
+                      <p className="text-gray-300 text-base">{plan.description}</p>
+                    </div>
+
+                    <ul className="space-y-3 mb-8 flex-grow">
+                      {plan.features.map((feature, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <Check className="h-5 w-5 text-cyan-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-200 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button 
+                      className={`w-full py-3 px-6 rounded-lg font-semibold text-base transition-all duration-200 cursor-pointer ${
+                        plan.popular
+                          ? 'bg-gradient-to-r from-cyan-500 to-teal-400 text-black hover:from-cyan-400 hover:to-teal-300'
+                          : 'bg-gradient-to-r from-gray-700 to-gray-600 text-white hover:from-cyan-600 hover:to-teal-500 border border-gray-500 hover:border-cyan-400'
+                      }`}
+                      onClick={async () => {
+                        try {
+                          const response = await fetch('/api/stripe/checkout', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                              planId: plan.id,
+                              hasBooking: plan.hasBooking || false,
+                            }),
+                          });
+
+                          if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                          }
+
+                          const data = await response.json();
+                          if (data.url) {
+                            window.location.href = data.url;
+                          } else {
+                            console.error('No URL received from checkout');
+                          }
+                        } catch (error) {
+                          console.error('Error creating checkout session:', error);
+                          alert('Sorry, there was an error. Please try again or contact support.');
+                        }
+                      }}
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        <Zap className="h-4 w-4" />
+                        {plan.hasBooking ? t.buttons.bookSession : t.buttons.getCoaching}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* How it Works */}
+      <section className="relative py-20 bg-gradient-to-br from-gray-900 via-black to-gray-800">
+        {/* Storm effects */}
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-green-400/10"></div>
+        <div className="absolute top-1/2 left-0 w-32 h-32 bg-green-400/10 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-0 right-0 w-40 h-40 bg-green-500/5 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+              <span className="text-cyan-400">{t.howItWorks.title}</span>
+            </h2>
+            <p className="text-lg text-cyan-100 max-w-3xl mx-auto">
+              {t.howItWorks.subtitle}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {t.howItWorks.steps.map((step, index) => (
+              <div key={index} className="text-center group">
+                <div className="relative mb-6 flex justify-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-400/50 transition-all duration-300">
+                    <span className="text-2xl font-bold text-black">{index + 1}</span>
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
+                  {step.title}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About Me Section */}
+      <section className="relative z-10 py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+              <span className="text-cyan-400">{t.aboutMe.title}</span>
+            </h2>
+          </div>
+
+          <div className="bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-sm border border-gray-600 rounded-2xl p-8 lg:p-12">
+            <div className="space-y-6 text-center">
+              <p className="text-gray-200 text-lg leading-relaxed">
+                {t.aboutMe.content.intro}
+              </p>
+              <p className="text-gray-200 text-lg leading-relaxed">
+                {t.aboutMe.content.transformation}
+              </p>
+              <p className="text-gray-200 text-lg leading-relaxed">
+                {t.aboutMe.content.passion}
+              </p>
+              <p className="text-cyan-400 text-lg leading-relaxed font-semibold">
+                {t.aboutMe.content.philosophy}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative bg-black border-t border-green-900/30">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-green-400/5"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center">
+            <div className="flex items-center justify-center mb-6">
+              <Swords className="h-10 w-10 text-cyan-400 mr-4 animate-pulse" />
+              <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">{t.footer.title}</span>
+              <Swords className="h-10 w-10 text-cyan-400 ml-4 animate-pulse" />
+            </div>
+            <p className="text-cyan-400 text-lg mb-4">
+              {t.footer.subtitle}
+            </p>
+            <p className="text-gray-500 text-sm">
+              {t.footer.copyright}
+            </p>
+          </div>
+        </div>
+      </footer>
+    </main>
+  );
+}
