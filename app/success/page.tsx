@@ -161,6 +161,29 @@ function SuccessContent() {
             </div>
           </div>
 
+          {/* After Discord Steps */}
+          <div className="bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-500/30 rounded-xl p-6 mb-6">
+            <h3 className="font-bold text-green-400 text-lg mb-3 flex items-center justify-center gap-2">
+              <Zap className="h-5 w-5" />
+              After Joining Discord
+            </h3>
+            <div className="text-gray-300 text-sm space-y-2">
+              <p className="text-center mb-4">Once you're in your private Discord channel:</p>
+              <ul className="space-y-2 text-left">
+                {planData.instructions.map((instruction, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
+                    <span>{instruction}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="bg-green-900/20 rounded-lg p-3 mt-4">
+                <p className="text-green-400 text-xs font-semibold">💡 Pro Tip:</p>
+                <p className="text-gray-300 text-xs">All detailed instructions are waiting for you in your private Discord channel!</p>
+              </div>
+            </div>
+          </div>
+
           <div className="text-center mb-6">
             <p className="text-green-400 font-semibold mb-2">
               {t.success.thankYou}

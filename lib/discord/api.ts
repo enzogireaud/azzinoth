@@ -141,6 +141,19 @@ class DiscordAPI {
       console.error(`Failed to send welcome message to ${channelId}:`, error);
     }
 
+    // Send plan-specific action steps
+    try {
+      console.log(`Sending action steps to channel ${channelId}`);
+      const actionEmbed = this.createActionStepsEmbed(data);
+      
+      await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
+        embeds: [actionEmbed]
+      });
+      console.log(`Action steps sent successfully to ${channelId}`);
+    } catch (error) {
+      console.error(`Failed to send action steps to ${channelId}:`, error);
+    }
+
     // Send additional info message
     try {
       console.log(`Sending info message to channel ${channelId}`);
@@ -270,6 +283,114 @@ class DiscordAPI {
           {
             name: '🔗 OP.GG Profile:',
             value: 'Share your OP.GG link for session preparation',
+            inline: false
+          }
+        ];
+        break;
+    }
+
+    return embed;
+  }
+
+  private createActionStepsEmbed(data: CustomerChannelData): DiscordEmbed {
+    const embed: DiscordEmbed = {
+      title: '📋 Your Next Steps',
+      color: 0x00bfff, // Deep sky blue
+      footer: {
+        text: 'Follow these steps to get started with your coaching!'
+      }
+    };
+
+    switch (data.planType) {
+      case 'simple':
+        embed.description = `**Ready to improve your toplane gameplay?** Here's what you need to do:`;
+        embed.fields = [
+          {
+            name: '1️⃣ Upload Your Game Replay',
+            value: '• Go to your League of Legends client\n• Open **Match History**\n• Find the game you want analyzed\n• Click **"Download"** to get the .rofl file\n• **Drag and drop the file here** in this Discord channel',
+            inline: false
+          },
+          {
+            name: '2️⃣ What Game to Choose?',
+            value: '• Pick a **recent ranked game** (within last 7 days)\n• Choose a game where you **struggled** or want feedback\n• Avoid games with trolls/AFKers (focus on your gameplay)\n• **Toplane games only** please!',
+            inline: false
+          },
+          {
+            name: '3️⃣ What Happens Next?',
+            value: '• I\'ll analyze your gameplay within **24-48 hours**\n• You\'ll receive **detailed written feedback**\n• Focus areas: **laning, teamfights, macro decisions**\n• I\'ll provide **specific improvement tips**',
+            inline: false
+          }
+        ];
+        break;
+
+      case 'medium':
+        embed.description = `**Time to level up your toplane mastery!** Here's your complete roadmap:`;
+        embed.fields = [
+          {
+            name: '1️⃣ Share Your OP.GG Profile',
+            value: '• Go to **op.gg** and search your summoner name\n• Copy the **full URL** of your profile\n• **Paste it here** so I can analyze your champion pool and rank history',
+            inline: false
+          },
+          {
+            name: '2️⃣ Upload 2 Game Replays',
+            value: '• Go to League client → **Match History**\n• Download **2 recent ranked games** (.rofl files)\n• Pick games that show your **typical performance**\n• **Drag and drop both files** in this channel',
+            inline: false
+          },
+          {
+            name: '3️⃣ What You\'ll Receive (within 24h)',
+            value: '• **Complete analysis** of both games\n• **Champion pool optimization** advice\n• **Macro improvement** recommendations\n• **Matchup-specific** guidance\n• **Rank climbing strategy** tailored to you',
+            inline: false
+          }
+        ];
+        break;
+
+      case 'premium':
+        embed.description = `**Welcome to premium coaching!** Get ready for your **1-hour live session**:`;
+        embed.fields = [
+          {
+            name: '1️⃣ Book Your Session',
+            value: '• Use this Calendly link: **[Book 1h Session](https://calendly.com/enzogireauds/toplane-coaching-1h)**\n• Choose a time that works for you\n• You\'ll receive confirmation email',
+            inline: false
+          },
+          {
+            name: '2️⃣ Share Your OP.GG',
+            value: '• Post your **OP.GG profile link** here\n• This helps me prepare for our session\n• I\'ll review your match history beforehand',
+            inline: false
+          },
+          {
+            name: '3️⃣ Session Preparation',
+            value: '• Think about **specific champions/matchups** you want to discuss\n• Have **recent games** ready to review together\n• Prepare **questions** about your gameplay\n• Make sure **Discord voice** is working',
+            inline: false
+          },
+          {
+            name: '4️⃣ What We\'ll Cover (1 Hour)',
+            value: '• **Live OP.GG review** and champion pool discussion\n• **Interactive replay analysis** together\n• **Real-time Q&A** about your gameplay\n• **Personalized improvement plan**',
+            inline: false
+          }
+        ];
+        break;
+
+      case 'premium-plus':
+        embed.description = `**Ultimate coaching experience activated!** Prepare for **1.5 hours** of intensive coaching:`;
+        embed.fields = [
+          {
+            name: '1️⃣ Book Your Premium Session',
+            value: '• Use this Calendly link: **[Book 1.5h Premium Session](https://calendly.com/enzogireauds/premium-plan-1h30)**\n• Choose your preferred time slot\n• Block **1.5 hours** in your schedule',
+            inline: false
+          },
+          {
+            name: '2️⃣ Pre-Session Setup',
+            value: '• Share your **OP.GG profile link** here\n• Make sure you can **play a live game** during our session\n• Have **screen share** ready in Discord\n• Test your **microphone and audio**',
+            inline: false
+          },
+          {
+            name: '3️⃣ Session Structure (1.5 Hours)',
+            value: '• **30 min**: Deep OP.GG analysis + champion pool optimization\n• **45 min**: Multiple replay reviews together\n• **15 min**: **LIVE game spectating** (I watch you play real-time!)\n• **Bonus**: Comprehensive strategy discussion',
+            inline: false
+          },
+          {
+            name: '4️⃣ Premium Extras',
+            value: '• **Live game coaching** - I guide you during a real match\n• **Extended Q&A** - no question is off-limits\n• **Custom improvement roadmap** for your climb\n• **Follow-up notes** summarizing our session',
             inline: false
           }
         ];
