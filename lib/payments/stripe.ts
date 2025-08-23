@@ -41,6 +41,9 @@ export async function createCheckoutSession(planId: PlanId, customerEmail?: stri
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   
+  // Ensure the baseUrl is properly formatted
+  const normalizedBaseUrl = baseUrl.startsWith('http') ? baseUrl : `https://${baseUrl}`;
+  
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: [
@@ -57,8 +60,8 @@ export async function createCheckoutSession(planId: PlanId, customerEmail?: stri
       },
     ],
     mode: 'payment', // One-time payment instead of subscription
-    success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=${planId}`,
-    cancel_url: `${baseUrl}`,
+    success_url: `${normalizedBaseUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=${planId}`,
+    cancel_url: normalizedBaseUrl,
     customer_email: customerEmail,
     metadata: {
       plan_id: planId,
