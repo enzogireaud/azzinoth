@@ -159,7 +159,15 @@ export const translations = {
         "Access your private channel with the link above",
         "Follow the instructions in your channel"
       ],
-      joinDiscord: "Join Discord Server"
+      joinDiscord: "Join Discord Server",
+      channelReady: "Your private Discord channel is ready!",
+      directChannelLink: "Direct link to your private channel:",
+      linkTroubleshoot: "If the link doesn't work, first join our Discord server below, then try again.",
+      creatingChannel: "Creating your private Discord channel...",
+      afterJoiningDiscord: "After Joining Discord",
+      onceInChannel: "Once you're in your private Discord channel:",
+      proTip: "Pro Tip:",
+      detailedInstructions: "All detailed instructions are waiting for you in your private Discord channel!"
     },
 
     // Footer
@@ -327,7 +335,15 @@ export const translations = {
         "Accédez à votre canal privé avec le lien ci-dessus", 
         "Suivez les instructions dans votre canal"
       ],
-      joinDiscord: "Rejoindre le Serveur Discord"
+      joinDiscord: "Rejoindre le Serveur Discord",
+      channelReady: "Votre canal Discord privé est prêt !",
+      directChannelLink: "Lien direct vers votre canal privé :",
+      linkTroubleshoot: "Si le lien ne fonctionne pas, rejoignez d'abord notre serveur Discord ci-dessous, puis réessayez.",
+      creatingChannel: "Création de votre canal Discord privé...",
+      afterJoiningDiscord: "Après avoir rejoint Discord",
+      onceInChannel: "Une fois dans votre canal Discord privé :",
+      proTip: "Conseil :",
+      detailedInstructions: "Toutes les instructions détaillées vous attendent dans votre canal Discord privé !"
     },
 
     // Footer

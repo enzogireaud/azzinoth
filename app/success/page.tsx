@@ -110,13 +110,13 @@ function SuccessContent() {
             {isLoadingChannel ? (
               <div className="text-center py-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto mb-3"></div>
-                <p className="text-gray-300 text-sm">Creating your private Discord channel...</p>
+                <p className="text-gray-300 text-sm">{t.success.creatingChannel}</p>
               </div>
             ) : discordChannelUrl ? (
               <div className="text-center space-y-4">
-                <p className="text-green-400 font-semibold">✅ Your private Discord channel is ready!</p>
+                <p className="text-green-400 font-semibold">✅ {t.success.channelReady}</p>
                 <div className="bg-gray-800/50 rounded-lg p-3 mb-4">
-                  <p className="text-xs text-gray-400 mb-2">Direct link to your private channel:</p>
+                  <p className="text-xs text-gray-400 mb-2">{t.success.directChannelLink}</p>
                   <a 
                     href={discordChannelUrl}
                     target="_blank"
@@ -127,7 +127,7 @@ function SuccessContent() {
                   </a>
                 </div>
                 <p className="text-gray-300 text-xs">
-                  If the link doesn't work, first join our Discord server below, then try again.
+                  {t.success.linkTroubleshoot}
                 </p>
               </div>
             ) : (
@@ -165,10 +165,10 @@ function SuccessContent() {
           <div className="bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-500/30 rounded-xl p-6 mb-6">
             <h3 className="font-bold text-green-400 text-lg mb-3 flex items-center justify-center gap-2">
               <Zap className="h-5 w-5" />
-              After Joining Discord
+              {t.success.afterJoiningDiscord}
             </h3>
             <div className="text-gray-300 text-sm space-y-2">
-              <p className="text-center mb-4">Once you're in your private Discord channel:</p>
+              <p className="text-center mb-4">{t.success.onceInChannel}</p>
               <ul className="space-y-2 text-left">
                 {planData.instructions.map((instruction, index) => (
                   <li key={index} className="flex items-start gap-3">
@@ -178,8 +178,8 @@ function SuccessContent() {
                 ))}
               </ul>
               <div className="bg-green-900/20 rounded-lg p-3 mt-4">
-                <p className="text-green-400 text-xs font-semibold">💡 Pro Tip:</p>
-                <p className="text-gray-300 text-xs">All detailed instructions are waiting for you in your private Discord channel!</p>
+                <p className="text-green-400 text-xs font-semibold">💡 {t.success.proTip}</p>
+                <p className="text-gray-300 text-xs">{t.success.detailedInstructions}</p>
               </div>
             </div>
           </div>
