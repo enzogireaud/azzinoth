@@ -7,8 +7,14 @@ import { channelStore } from '@/lib/discord/channel-store';
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(request: NextRequest) {
+  console.log('🚀 Stripe webhook endpoint hit!');
+  console.log('Headers:', Object.fromEntries(request.headers.entries()));
+  
   const payload = await request.text();
   const signature = request.headers.get('stripe-signature') as string;
+  
+  console.log('📦 Payload received:', payload ? 'YES' : 'NO');
+  console.log('✍️ Signature received:', signature ? 'YES' : 'NO');
 
   let event: Stripe.Event;
 

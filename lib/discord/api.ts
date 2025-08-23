@@ -111,11 +111,7 @@ class DiscordAPI {
             type: 0,
             deny: '1024', // VIEW_CHANNEL permission
           },
-          {
-            id: this.botToken!.split('.')[0], // Bot's user ID (extracted from token)
-            type: 1,
-            allow: '3072', // VIEW_CHANNEL + SEND_MESSAGES permissions for bot
-          },
+          // Bot should have permissions through server roles
           // Note: You can add your user ID here manually for access
           // {
           //   id: 'YOUR_USER_ID_HERE',
