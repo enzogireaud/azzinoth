@@ -166,6 +166,21 @@ class DiscordAPI {
       console.error(`Failed to send action steps to ${channelId}:`, error);
     }
 
+    // Send subscription summary for premium plans
+    if (['premium', 'premium-plus'].includes(data.planType)) {
+      try {
+        console.log(`Sending subscription summary to channel ${channelId}`);
+        const summaryEmbed = this.createSubscriptionSummaryEmbed(data);
+        
+        await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
+          embeds: [summaryEmbed]
+        });
+        console.log(`Subscription summary sent successfully to ${channelId}`);
+      } catch (error) {
+        console.error(`Failed to send subscription summary to ${channelId}:`, error);
+      }
+    }
+
     // Send additional info message
     try {
       console.log(`Sending info message to channel ${channelId}`);
@@ -408,6 +423,78 @@ class DiscordAPI {
         ];
         break;
     }
+
+    return embed;
+  }
+
+  private createSubscriptionSummaryEmbed(data: CustomerChannelData): DiscordEmbed {
+    const embed: DiscordEmbed = {
+      title: '🎉 Subscription Confirmation',
+      color: 0xffd700, // Gold color
+      footer: {
+        text: `Welcome to Azzinoth Coaching • Master Toplane Training`
+      }
+    };
+
+    const plans = {
+      premium: {
+        name: 'Premium Plan',
+        price: '€50',
+        duration: '1 Hour',
+        calendlyLink: 'https://calendly.com/enzogireauds/toplane-coaching-1h',
+        features: [
+          '🎤 **Live Discord voice session** with screen sharing',
+          '📊 **OP.GG profile deep dive** and champion pool analysis', 
+          '🎮 **Interactive replay review** together',
+          '🎯 **Real-time Q&A** about your gameplay',
+          '📋 **Personalized improvement plan**'
+        ]
+      },
+      'premium-plus': {
+        name: 'Premium+ Plan', 
+        price: '€75',
+        duration: '1.5 Hours',
+        calendlyLink: 'https://calendly.com/enzogireauds/premium-plan-1h30',
+        features: [
+          '🎤 **Extended live Discord session** with screen sharing',
+          '📊 **Comprehensive OP.GG analysis** and champion optimization',
+          '🎮 **Multiple replay reviews** with detailed breakdowns', 
+          '🔴 **LIVE game spectating** - I watch you play in real-time!',
+          '🎯 **Extended Q&A session** with no limits',
+          '📋 **Custom improvement roadmap** for your rank climb',
+          '📝 **Follow-up notes** summarizing our session'
+        ]
+      }
+    };
+
+    const planInfo = plans[data.planType as keyof typeof plans];
+    
+    embed.description = `**Congratulations ${data.customerName || 'Champion'}!** 🏆\n\n` +
+                       `You've successfully purchased the **${planInfo.name}** (${planInfo.price}) for **${planInfo.duration}** of intensive toplane coaching with Azzinoth.`;
+
+    embed.fields = [
+      {
+        name: '🎯 What You Get:',
+        value: planInfo.features.join('\n'),
+        inline: false
+      },
+      {
+        name: '📅 Book Your Session NOW:',
+        value: `**[🗓️ CLICK HERE TO BOOK YOUR ${planInfo.duration.toUpperCase()} SESSION](${planInfo.calendlyLink})**\n\n` +
+               `⏰ **Choose your preferred time slot**\n` +
+               `📧 **You'll receive a confirmation email**\n` +
+               `🎮 **Session will be conducted right here in Discord**`,
+        inline: false
+      },
+      {
+        name: '⚡ Before Our Session:',
+        value: '• **Share your OP.GG profile link** in this channel\n' +
+               '• **Prepare specific questions** about your gameplay\n' +
+               '• **Test your Discord voice/mic** to ensure quality\n' +
+               '• **Have recent replays** ready for review',
+        inline: false
+      }
+    ];
 
     return embed;
   }
