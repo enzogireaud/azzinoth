@@ -94,28 +94,12 @@ function SuccessContent() {
                 {planData.title}
               </h2>
               <p className="text-green-400 text-sm">
-                {t.success.checkEmail}
+                Access your private Discord channel below for all instructions and next steps!
               </p>
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-500/30 rounded-xl p-6 mb-8">
-            <h3 className="font-bold text-green-400 text-xl mb-4 flex items-center justify-center gap-2">
-              <Zap className="h-5 w-5" />
-              {t.success.nextSteps}
-            </h3>
-            <div className="text-gray-300 mb-4">
-              <p className="text-sm text-center">{t.success.contactInfo}</p>
-            </div>
-            <ul className="text-sm text-gray-300 space-y-3 text-left">
-              {planData.instructions.map((instruction, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  <span>{instruction}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+
 
           <div className="bg-gradient-to-br from-purple-900/20 to-blue-800/10 border border-purple-500/30 rounded-xl p-6 mb-6">
             <h3 className="font-bold text-purple-400 text-lg mb-3 flex items-center justify-center gap-2">
