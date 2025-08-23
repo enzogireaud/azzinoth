@@ -44,9 +44,11 @@ class DiscordAPI {
       this.guildId = process.env.DISCORD_GUILD_ID;
 
       if (!this.botToken || !this.guildId) {
-        throw new Error('Discord configuration missing: DISCORD_BOT_TOKEN and DISCORD_GUILD_ID required');
+        console.warn('Discord configuration missing - Discord integration disabled');
+        return false;
       }
     }
+    return true;
   }
 
   private async makeRequest(endpoint: string, method = 'GET', body?: any) {
@@ -69,7 +71,10 @@ class DiscordAPI {
 
   async createCustomerChannel(data: CustomerChannelData): Promise<string | null> {
     try {
-      this.ensureInitialized();
+      if (!this.ensureInitialized()) {
+        console.log('Discord not configured - skipping channel creation');
+        return null;
+      }
       // Find or create "Active Customers" category
       const channels = await this.makeRequest(`/guilds/${this.guildId}/channels`);
       let categoryId = channels.find((ch: any) => 
@@ -215,7 +220,7 @@ class DiscordAPI {
         embed.fields = [
           {
             name: '📅 Book Your 1-Hour Session:',
-            value: '**[📅 Click here to book your session](https://calendly.com/azzinoth/1h-coaching)**\n\n*Choose a time that works for you!*',
+            value: '**[📅 Click here to book your session](https://calendly.com/enzogireauds/toplane-coaching-1h)**\n\n*Choose a time that works for you!*',
             inline: false
           },
           {
@@ -243,7 +248,7 @@ class DiscordAPI {
         embed.fields = [
           {
             name: '📅 Book Your 1.5-Hour Premium Session:',
-            value: '**[📅 Click here to book your premium session](https://calendly.com/azzinoth/1h30-premium-coaching)**\n\n*Choose your preferred time slot!*',
+            value: '**[📅 Click here to book your premium session](https://calendly.com/enzogireauds/premium-plan-1h30)**\n\n*Choose your preferred time slot!*',
             inline: false
           },
           {
@@ -260,7 +265,10 @@ class DiscordAPI {
 
   async sendNotification(message: string, channelName = 'notifications') {
     try {
-      this.ensureInitialized();
+      if (!this.ensureInitialized()) {
+        console.log('Discord not configured - skipping notification');
+        return;
+      }
       // Find notifications channel
       const channels = await this.makeRequest(`/guilds/${this.guildId}/channels`);
       const notificationChannel = channels.find((ch: any) => 
