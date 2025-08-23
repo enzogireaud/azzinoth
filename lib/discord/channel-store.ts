@@ -13,19 +13,27 @@ class ChannelStore {
 
   // Store channel info using Stripe session ID as key
   storeChannel(sessionId: string, info: ChannelInfo) {
+    console.log(`🏪 STORING channel info for session: ${sessionId}`);
+    console.log(`🏪 Channel info:`, info);
     this.channels.set(sessionId, info);
-    console.log(`Stored channel info for session ${sessionId}`);
+    console.log(`✅ Successfully stored! Total stored: ${this.channels.size}`);
+    console.log(`🗂️ All stored sessions:`, Array.from(this.channels.keys()));
     
     // Auto-cleanup after 1 hour
     setTimeout(() => {
       this.channels.delete(sessionId);
-      console.log(`Cleaned up channel info for session ${sessionId}`);
+      console.log(`🧹 Cleaned up channel info for session ${sessionId}`);
     }, 60 * 60 * 1000);
   }
 
   // Get channel info by session ID
   getChannel(sessionId: string): ChannelInfo | null {
-    return this.channels.get(sessionId) || null;
+    console.log(`🔍 LOOKING UP channel for session: ${sessionId}`);
+    console.log(`🔍 Total stored sessions: ${this.channels.size}`);
+    console.log(`🔍 Available sessions:`, Array.from(this.channels.keys()));
+    const result = this.channels.get(sessionId) || null;
+    console.log(`🔍 Lookup result:`, result ? 'FOUND' : 'NOT FOUND');
+    return result;
   }
 
   // List all stored channels (for debugging)
