@@ -129,27 +129,39 @@ class DiscordAPI {
   }
 
   private async sendWelcomeMessage(channelId: string, data: CustomerChannelData) {
-    const embed = this.createWelcomeEmbed(data);
-    
-    await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
-      embeds: [embed]
-    });
+    try {
+      console.log(`Sending welcome message to channel ${channelId}`);
+      const embed = this.createWelcomeEmbed(data);
+      
+      await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
+        embeds: [embed]
+      });
+      console.log(`Welcome message sent successfully to ${channelId}`);
+    } catch (error) {
+      console.error(`Failed to send welcome message to ${channelId}:`, error);
+    }
 
     // Send additional info message
-    const infoEmbed: DiscordEmbed = {
-      title: '💡 Important Information',
-      description: 
-        `**This channel will automatically delete after ${['premium', 'premium-plus'].includes(data.planType) ? '14 days' : '7 days'}.**\n\n` +
-        `🔒 This is your **private channel** - only you and I can see it.\n` +
-        `⚡ I'll respond as quickly as possible.\n` +
-        `❓ Feel free to ask questions anytime!\n\n` +
-        `🎯 **Need immediate help?** Just mention me @Azzinoth`,
-      color: 0xffaa00, // Orange color
-    };
+    try {
+      console.log(`Sending info message to channel ${channelId}`);
+      const infoEmbed: DiscordEmbed = {
+        title: '💡 Important Information',
+        description: 
+          `**This channel will automatically delete after ${['premium', 'premium-plus'].includes(data.planType) ? '14 days' : '7 days'}.**\n\n` +
+          `🔒 This is your **private channel** - only you and I can see it.\n` +
+          `⚡ I'll respond as quickly as possible.\n` +
+          `❓ Feel free to ask questions anytime!\n\n` +
+          `🎯 **Need immediate help?** Just mention me @Azzinoth`,
+        color: 0xffaa00, // Orange color
+      };
 
-    await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
-      embeds: [infoEmbed]
-    });
+      await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
+        embeds: [infoEmbed]
+      });
+      console.log(`Info message sent successfully to ${channelId}`);
+    } catch (error) {
+      console.error(`Failed to send info message to ${channelId}:`, error);
+    }
   }
 
   private createWelcomeEmbed(data: CustomerChannelData): DiscordEmbed {

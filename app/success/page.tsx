@@ -5,16 +5,49 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/context';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const { t } = useLanguage();
   const planId = searchParams.get('plan') || 'simple';
+  const sessionId = searchParams.get('session_id');
+  
+  const [discordChannelUrl, setDiscordChannelUrl] = useState<string | null>(null);
+  const [isLoadingChannel, setIsLoadingChannel] = useState(true);
   
   // Get plan-specific content
   const planKey = planId as keyof typeof t.success.plans;
   const planData = t.success.plans[planKey] || t.success.plans.simple;
+
+  // Poll for Discord channel creation
+  useEffect(() => {
+    if (!sessionId) {
+      setIsLoadingChannel(false);
+      return;
+    }
+
+    const pollForChannel = async () => {
+      try {
+        const response = await fetch(`/api/discord/channel?session=${sessionId}`);
+        const data = await response.json();
+        
+        if (data.found && data.channelUrl) {
+          setDiscordChannelUrl(data.channelUrl);
+          setIsLoadingChannel(false);
+        } else {
+          // Channel not ready yet, poll again in 2 seconds
+          setTimeout(pollForChannel, 2000);
+        }
+      } catch (error) {
+        console.error('Error polling for Discord channel:', error);
+        setIsLoadingChannel(false);
+      }
+    };
+
+    // Start polling after 1 second (give webhook time to process)
+    setTimeout(pollForChannel, 1000);
+  }, [sessionId]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-green-900 relative overflow-hidden flex items-center justify-center p-4">
@@ -89,22 +122,51 @@ function SuccessContent() {
               <Crown className="h-5 w-5" />
               {t.success.discordAccess}
             </h3>
-            <p className="text-gray-300 text-sm text-center mb-4">
-              {t.success.discordInstructions}
-            </p>
-            <ol className="text-sm text-gray-300 space-y-2 mb-4">
-              {t.success.discordSteps.map((step, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
-                    {index + 1}
-                  </span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
+            
+            {isLoadingChannel ? (
+              <div className="text-center py-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto mb-3"></div>
+                <p className="text-gray-300 text-sm">Creating your private Discord channel...</p>
+              </div>
+            ) : discordChannelUrl ? (
+              <div className="text-center space-y-4">
+                <p className="text-green-400 font-semibold">✅ Your private Discord channel is ready!</p>
+                <div className="bg-gray-800/50 rounded-lg p-3 mb-4">
+                  <p className="text-xs text-gray-400 mb-2">Direct link to your private channel:</p>
+                  <a 
+                    href={discordChannelUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 text-sm break-all"
+                  >
+                    {discordChannelUrl}
+                  </a>
+                </div>
+                <p className="text-gray-300 text-xs">
+                  If the link doesn't work, first join our Discord server below, then try again.
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="text-gray-300 text-sm text-center mb-4">
+                  {t.success.discordInstructions}
+                </p>
+                <ol className="text-sm text-gray-300 space-y-2 mb-4">
+                  {t.success.discordSteps.map((step, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                        {index + 1}
+                      </span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </>
+            )}
+            
             <div className="text-center">
               <a 
-                href="https://discord.gg/YOUR_INVITE_CODE_HERE"
+                href="https://discord.gg/8Wy5BwxKeD"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-bold text-sm hover:from-purple-400 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-purple-500/30"

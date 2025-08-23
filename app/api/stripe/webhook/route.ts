@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import { stripe } from '@/lib/payments/stripe';
 import { NextRequest, NextResponse } from 'next/server';
 import { discordAPI } from '@/lib/discord/api';
+import { channelStore } from '@/lib/discord/channel-store';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -48,6 +49,14 @@ export async function POST(request: NextRequest) {
           
           if (channelUrl) {
             console.log(`Discord channel created for ${customerEmail}: ${channelUrl}`);
+            
+            // Store channel info for the success page to retrieve
+            channelStore.storeChannel(session.id, {
+              channelUrl,
+              planType: planId,
+              customerEmail,
+              createdAt: Date.now()
+            });
             
             // Send notification to you about new customer
             await discordAPI.sendNotification(
