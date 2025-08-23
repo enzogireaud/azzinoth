@@ -151,7 +151,15 @@ export const translations = {
       },
       backToHome: "Back to Home",
       thankYou: "Thank you for choosing Azzinoth Coaching!",
-      support: "Need help? Contact us at coaching@azzinoth.com"
+      support: "Need help? Contact us at coaching@azzinoth.com",
+      discordAccess: "Discord Access Required",
+      discordInstructions: "To access your private coaching channel:",
+      discordSteps: [
+        "Join our Discord server (create account if needed)",
+        "Access your private channel with the link above",
+        "Follow the instructions in your channel"
+      ],
+      joinDiscord: "Join Discord Server"
     },
 
     // Footer
@@ -309,9 +317,17 @@ export const translations = {
           emailSubject: "Détails de votre session coaching premium d'1h30"
         }
       },
-      backToHome: "Retour Accueil",
+      backToHome: "Retour Accueil", 
       thankYou: "Merci d'avoir choisi Azzinoth Coaching !",
-      support: "Besoin d'aide ? Contactez-nous à coaching@azzinoth.com"
+      support: "Besoin d'aide ? Contactez-nous à coaching@azzinoth.com",
+      discordAccess: "Accès Discord Requis",
+      discordInstructions: "Pour accéder à votre canal de coaching privé :",
+      discordSteps: [
+        "Rejoignez notre serveur Discord (créez un compte si nécessaire)",
+        "Accédez à votre canal privé avec le lien ci-dessus", 
+        "Suivez les instructions dans votre canal"
+      ],
+      joinDiscord: "Rejoindre le Serveur Discord"
     },
 
     // Footer

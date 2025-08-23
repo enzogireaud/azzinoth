@@ -84,6 +84,37 @@ function SuccessContent() {
             </ul>
           </div>
 
+          <div className="bg-gradient-to-br from-purple-900/20 to-blue-800/10 border border-purple-500/30 rounded-xl p-6 mb-6">
+            <h3 className="font-bold text-purple-400 text-lg mb-3 flex items-center justify-center gap-2">
+              <Crown className="h-5 w-5" />
+              {t.success.discordAccess}
+            </h3>
+            <p className="text-gray-300 text-sm text-center mb-4">
+              {t.success.discordInstructions}
+            </p>
+            <ol className="text-sm text-gray-300 space-y-2 mb-4">
+              {t.success.discordSteps.map((step, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                    {index + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="text-center">
+              <a 
+                href="https://discord.gg/YOUR_INVITE_CODE_HERE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-bold text-sm hover:from-purple-400 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-purple-500/30"
+              >
+                <Crown className="h-4 w-4" />
+                {t.success.joinDiscord}
+              </a>
+            </div>
+          </div>
+
           <div className="text-center mb-6">
             <p className="text-green-400 font-semibold mb-2">
               {t.success.thankYou}

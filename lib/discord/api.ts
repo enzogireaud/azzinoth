@@ -116,6 +116,10 @@ class DiscordAPI {
       await this.sendWelcomeMessage(channel.id, data);
 
       console.log(`Created Discord channel: ${channelName} for ${data.customerEmail}`);
+      
+      // Store channel info for later use (could be database in production)
+      // For now, we'll use the channel name to find it later
+      
       return `https://discord.com/channels/${this.guildId!}/${channel.id}`;
 
     } catch (error) {
