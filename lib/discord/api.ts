@@ -52,37 +52,49 @@ class DiscordAPI {
   }
 
   private async makeRequest(endpoint: string, method = 'GET', body?: any) {
-    console.log(`Making Discord API request: ${method} ${endpoint}`);
+    console.log(`🔗 Making Discord API request: ${method} ${endpoint}`);
     if (body) {
-      console.log(`Request body:`, JSON.stringify(body, null, 2));
+      console.log(`🔗 Request body:`, JSON.stringify(body, null, 2));
     }
     
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      method,
-      headers: {
-        'Authorization': `Bot ${this.botToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    });
+    try {
+      const response = await fetch(`${this.baseURL}${endpoint}`, {
+        method,
+        headers: {
+          'Authorization': `Bot ${this.botToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: body ? JSON.stringify(body) : undefined,
+      });
 
-    const responseText = await response.text();
-    console.log(`Discord API response: ${response.status} ${response.statusText}`);
-    console.log(`Response body:`, responseText);
+      const responseText = await response.text();
+      console.log(`🔗 Discord API response: ${response.status} ${response.statusText}`);
+      console.log(`🔗 Response body:`, responseText);
 
-    if (!response.ok) {
-      throw new Error(`Discord API error: ${response.status} ${response.statusText} - ${responseText}`);
+      if (!response.ok) {
+        const error = new Error(`Discord API error: ${response.status} ${response.statusText} - ${responseText}`);
+        console.error('🔗 Discord API request failed:', error.message);
+        throw error;
+      }
+
+      return responseText ? JSON.parse(responseText) : {};
+    } catch (error) {
+      console.error('🔗 Discord API request exception:', error);
+      throw error;
     }
-
-    return responseText ? JSON.parse(responseText) : {};
   }
 
   async createCustomerChannel(data: CustomerChannelData): Promise<string | null> {
     try {
+      console.log('🏗️ === STARTING DISCORD CHANNEL CREATION ===');
+      console.log('🏗️ Customer data:', data);
+      
       if (!this.ensureInitialized()) {
-        console.log('Discord not configured - skipping channel creation');
+        console.log('❌ Discord not configured - skipping channel creation');
         return null;
       }
+      console.log('✅ Discord initialized successfully');
+      
       // Find or create "Active Customers" category
       const channels = await this.makeRequest(`/guilds/${this.guildId}/channels`);
       let categoryId = channels.find((ch: any) => 
@@ -121,10 +133,12 @@ class DiscordAPI {
         ],
       });
 
+      console.log('📢 === SENDING WELCOME MESSAGES ===');
       // Send welcome message
       await this.sendWelcomeMessage(channel.id, data);
 
-      console.log(`Created Discord channel: ${channelName} for ${data.customerEmail}`);
+      console.log(`✅ Created Discord channel: ${channelName} for ${data.customerEmail}`);
+      console.log('🏗️ === DISCORD CHANNEL CREATION COMPLETED ===');
       
       // Store channel info for later use (could be database in production)
       // For now, we'll use the channel name to find it later
@@ -132,7 +146,12 @@ class DiscordAPI {
       return `https://discord.com/channels/${this.guildId!}/${channel.id}`;
 
     } catch (error) {
-      console.error('Error creating Discord channel:', error);
+      console.error('❌ === DISCORD CHANNEL CREATION FAILED ===');
+      console.error('❌ Error details:', error);
+      if (error instanceof Error) {
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error stack:', error.stack);
+      }
       return null;
     }
   }
