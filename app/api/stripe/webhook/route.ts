@@ -30,7 +30,14 @@ export async function POST(request: NextRequest) {
       break;
     case 'checkout.session.completed':
       const session = event.data.object as Stripe.Checkout.Session;
-      console.log(`Checkout session completed: ${session.id}`);
+      console.log(`🎯 Checkout session completed: ${session.id}`);
+      console.log('Session details:', {
+        id: session.id,
+        planId: session.metadata?.plan_id,
+        customerEmail: session.customer_details?.email || session.customer_email,
+        customerName: session.customer_details?.name,
+        amount: session.amount_total
+      });
       
       try {
         // Get plan info from session metadata
@@ -38,7 +45,11 @@ export async function POST(request: NextRequest) {
         const customerEmail = session.customer_details?.email || session.customer_email;
         const customerName = session.customer_details?.name;
         
+        console.log(`🔍 Processing payment: planId=${planId}, email=${customerEmail}`);
+        
         if (planId && customerEmail) {
+          console.log('✅ Plan and email found, creating Discord channel...');
+          
           // Create Discord channel for customer
           const channelUrl = await discordAPI.createCustomerChannel({
             planType: planId as 'simple' | 'medium' | 'premium' | 'premium-plus',
@@ -48,7 +59,7 @@ export async function POST(request: NextRequest) {
           });
           
           if (channelUrl) {
-            console.log(`Discord channel created for ${customerEmail}: ${channelUrl}`);
+            console.log(`✅ Discord channel created for ${customerEmail}: ${channelUrl}`);
             
             // Store channel info for the success page to retrieve
             channelStore.storeChannel(session.id, {
@@ -57,17 +68,26 @@ export async function POST(request: NextRequest) {
               customerEmail,
               createdAt: Date.now()
             });
+            console.log(`✅ Channel info stored for session: ${session.id}`);
             
             // Send notification to you about new customer
             await discordAPI.sendNotification(
               `🎉 **New Customer!** \n**Plan:** ${planId.toUpperCase()}\n**Email:** ${customerEmail}\n**Channel:** <${channelUrl}>\n**Amount:** €${session.amount_total ? session.amount_total / 100 : 'N/A'}`
             );
+            console.log('✅ Admin notification sent');
+          } else {
+            console.error('❌ Discord channel creation failed - no URL returned');
           }
         } else {
-          console.error('Missing plan_id or customer_email in session metadata');
+          console.error('❌ Missing plan_id or customer_email in session metadata');
+          console.error('Available metadata:', session.metadata);
         }
       } catch (error: unknown) {
-        console.error('Error processing checkout session:', error);
+        console.error('❌ Error processing checkout session:', error);
+        if (error instanceof Error) {
+          console.error('Error details:', error.message);
+          console.error('Error stack:', error.stack);
+        }
         // Don't throw error to avoid webhook retry loops
       }
       break;
