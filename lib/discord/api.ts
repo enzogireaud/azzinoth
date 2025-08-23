@@ -52,6 +52,11 @@ class DiscordAPI {
   }
 
   private async makeRequest(endpoint: string, method = 'GET', body?: any) {
+    console.log(`Making Discord API request: ${method} ${endpoint}`);
+    if (body) {
+      console.log(`Request body:`, JSON.stringify(body, null, 2));
+    }
+    
     const response = await fetch(`${this.baseURL}${endpoint}`, {
       method,
       headers: {
@@ -61,12 +66,15 @@ class DiscordAPI {
       body: body ? JSON.stringify(body) : undefined,
     });
 
+    const responseText = await response.text();
+    console.log(`Discord API response: ${response.status} ${response.statusText}`);
+    console.log(`Response body:`, responseText);
+
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Discord API error: ${response.status} ${error}`);
+      throw new Error(`Discord API error: ${response.status} ${response.statusText} - ${responseText}`);
     }
 
-    return response.json();
+    return responseText ? JSON.parse(responseText) : {};
   }
 
   async createCustomerChannel(data: CustomerChannelData): Promise<string | null> {
@@ -103,7 +111,12 @@ class DiscordAPI {
             type: 0,
             deny: '1024', // VIEW_CHANNEL permission
           },
-          // Note: You'll need to get your user ID and add it here manually
+          {
+            id: this.botToken!.split('.')[0], // Bot's user ID (extracted from token)
+            type: 1,
+            allow: '3072', // VIEW_CHANNEL + SEND_MESSAGES permissions for bot
+          },
+          // Note: You can add your user ID here manually for access
           // {
           //   id: 'YOUR_USER_ID_HERE',
           //   type: 1,
@@ -133,12 +146,15 @@ class DiscordAPI {
       console.log(`Sending welcome message to channel ${channelId}`);
       const embed = this.createWelcomeEmbed(data);
       
-      await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
+      const response = await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
         embeds: [embed]
       });
-      console.log(`Welcome message sent successfully to ${channelId}`);
+      console.log(`Welcome message sent successfully to ${channelId}:`, response);
     } catch (error) {
       console.error(`Failed to send welcome message to ${channelId}:`, error);
+      if (error instanceof Error) {
+        console.error(`Error details:`, error.message);
+      }
     }
 
     // Send plan-specific action steps
