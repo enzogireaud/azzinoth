@@ -104,7 +104,7 @@ export const translations = {
 
     // Testimonials Section
     testimonials: {
-      title: "Real Student Feedback",
+      title: "Student Feedback",
       subtitle: "What my students say after coaching sessions",
       readyResults: "Ready to get similar results?",
       choosePlan: "Choose Your Plan",
