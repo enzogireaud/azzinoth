@@ -1,0 +1,20 @@
+{
+  "cs_test_a1UrF0ooCUf9sVZVdvOFzzF6eWIOEy2qDMIXldvWlg71Drt7eyywoVMPSI": {
+    "channelUrl": "https://discord.com/channels/1390748105535918212/1409487291256279150",
+    "planType": "medium",
+    "customerEmail": "enzogireauds@gmail.com",
+    "createdAt": 1756118357667
+  },
+  "cs_test_a1zo1T58sNCDhmSU5hfq9xer3qYGG7YN4sNqcfA5SWKXyUQOzDdvsedkKC": {
+    "channelUrl": "https://discord.com/channels/1390748105535918212/1409489273287344190",
+    "planType": "premium",
+    "customerEmail": "enzogireauds@gmail.com",
+    "createdAt": 1756118830146
+  },
+  "cs_test_a1TZzDf8XhITQCebC0vKbqGGi2P0JaAXMe2vE4jmYa073XLe7GDaxsmlqv": {
+    "channelUrl": "https://discord.com/channels/1390748105535918212/1409490589191376926",
+    "planType": "premium-plus",
+    "customerEmail": "enzogireauds@gmail.com",
+    "createdAt": 1756119143785
+  }
+}
