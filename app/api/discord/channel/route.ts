@@ -5,7 +5,11 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const sessionId = searchParams.get('session');
   
+  console.log('🔍 === CHANNEL LOOKUP API CALLED ===');
+  console.log('🔍 Raw URL:', request.url);
   console.log(`🔍 Checking for Discord channel with session ID: ${sessionId}`);
+  console.log('🔍 channelStore instance in API:', channelStore);
+  console.log('🔍 channelStore constructor name in API:', channelStore.constructor.name);
   
   if (!sessionId) {
     console.log('❌ No session ID provided');

@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, Star, Zap, Shield, Swords, Crown } from 'lucide-react';
+import { Check, Star, Zap, Shield, Swords, Crown, Quote } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/context';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
@@ -22,7 +22,7 @@ export default function HomePage() {
     {
       id: 'medium' as const,
       name: t.plans.medium.name,
-      price: '30€',
+      price: '25€',
       description: t.plans.medium.description,
       icon: Swords,
       features: t.plans.medium.features,
@@ -31,7 +31,7 @@ export default function HomePage() {
     {
       id: 'premium' as const,
       name: t.plans.premium.name,
-      price: '50€',
+      price: '40€',
       description: t.plans.premium.description,
       icon: Zap,
       features: t.plans.premium.features,
@@ -41,7 +41,7 @@ export default function HomePage() {
     {
       id: 'premium-plus' as const,
       name: t.plans.premiumPlus.name,
-      price: '75€',
+      price: '60€',
       description: t.plans.premiumPlus.description,
       icon: Crown,
       features: t.plans.premiumPlus.features,
@@ -67,38 +67,24 @@ export default function HomePage() {
       <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-gray-900/60 to-black/70"></div>
 
       {/* Header */}
-      <header className="relative z-10 pt-8 pb-12">
+      <header className="relative z-10 pt-8 pb-4">
         {/* Language Switcher */}
         <div className="absolute top-6 right-6 z-20">
           <LanguageSwitcher />
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8">
-          <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center">
             <Swords className="h-16 w-16 text-cyan-400 mr-4" />
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 via-teal-300 to-green-400 bg-clip-text text-transparent">
               {t.title}
             </h1>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-3">
-            {t.subtitle}
-          </h2>
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="bg-gradient-to-r from-cyan-500 to-teal-400 text-black px-4 py-2 rounded-full font-bold text-sm">
-              {t.badges.masterTier}
-            </div>
-            <div className="bg-gradient-to-r from-orange-600 to-red-500 text-white px-4 py-2 rounded-full font-bold text-sm">
-              {t.badges.toplaneSpealist}
-            </div>
-          </div>
-          <p className="text-xl text-cyan-100 max-w-4xl mx-auto leading-relaxed">
-            {t.heroDescription}
-          </p>
         </div>
       </header>
 
       {/* Pricing Plans */}
-      <section className="relative z-10 py-16">
+      <section id="coaching-plans" className="relative z-10 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -266,7 +252,89 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Testimonials Section */}
+      <section className="relative py-20 bg-gradient-to-br from-black via-gray-900 to-black">
+        {/* Storm Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-green-400/10"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/3 w-64 h-64 bg-green-400/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
+        
+        {/* Lightning Accents */}
+        <div className="absolute top-10 right-10 text-green-400/20">
+          <Zap className="h-8 w-8 animate-pulse" />
+        </div>
+        <div className="absolute bottom-20 left-10 text-green-500/15">
+          <Crown className="h-6 w-6 animate-pulse delay-700" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-6">
+              <Star className="h-8 w-8 text-green-400 mr-3 animate-pulse" />
+              <h2 className="text-3xl sm:text-4xl font-bold text-white">
+                <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
+                  {t.testimonials.title}
+                </span>
+              </h2>
+              <Star className="h-8 w-8 text-green-400 ml-3 animate-pulse" />
+            </div>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+              {t.testimonials.subtitle}
+            </p>
+          </div>
+
+          {/* Testimonials Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {t.testimonials.examples.map((testimonial, index) => (
+              <div key={index} className="group relative">
+                {/* Discord-style Message Card */}
+                <div className="bg-gradient-to-br from-gray-900/80 to-black/70 rounded-xl border border-gray-700/50 p-6 hover:border-gray-600 transition-all duration-300 shadow-lg h-80 flex flex-col">
+                  {/* Discord Header */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">{testimonial.name.charAt(0)}</span>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold">{testimonial.name}</h4>
+                    </div>
+                  </div>
+                  
+                  {/* Message Content */}
+                  <div className="p-4 flex-1 overflow-y-auto">
+                    <p className="text-gray-300 leading-relaxed text-sm">{testimonial.feedback}</p>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Translation Note */}
+          <div className="text-center mt-8">
+            <p className="text-gray-500 text-xs italic">{t.testimonials.translationNote}</p>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center mt-16">
+            <p className="text-lg text-gray-300 mb-6">
+              {t.testimonials.readyResults} 🚀
+            </p>
+            <button 
+              onClick={() => {
+                const plansSection = document.getElementById('coaching-plans');
+                plansSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-400 text-black px-8 py-4 rounded-xl font-bold text-lg hover:from-green-400 hover:to-green-300 transition-all duration-300 shadow-lg shadow-green-500/30 cursor-pointer"
+            >
+              <Crown className="h-5 w-5" />
+              {t.testimonials.choosePlan}
+              <Zap className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </section>
+
       <footer className="relative bg-black border-t border-green-900/30">
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-green-400/5"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

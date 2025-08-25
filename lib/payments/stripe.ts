@@ -13,19 +13,19 @@ export const COACHING_PLANS = {
   medium: {
     id: 'medium', 
     name: 'Medium Plan',
-    price: 3000, // 30€ in cents
+    price: 2500, // 25€ in cents
     description: 'OP.GG review + two game reviews + champion pool advice'
   },
   premium: {
     id: 'premium',
     name: 'Premium Plan', 
-    price: 5000, // 50€ in cents
+    price: 4000, // 40€ in cents
     description: '1 hour Discord coaching session'
   },
   'premium-plus': {
     id: 'premium-plus',
     name: 'Premium+ Plan',
-    price: 7500, // 75€ in cents  
+    price: 6000, // 60€ in cents  
     description: '1.5 hour Discord coaching session + live game review'
   }
 } as const;
@@ -43,7 +43,7 @@ export async function createCheckoutSession(planId: PlanId, customerEmail?: stri
   
   // Ensure the baseUrl is properly formatted
   const normalizedBaseUrl = baseUrl.startsWith('http') ? baseUrl : `https://${baseUrl}`;
-  
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: [

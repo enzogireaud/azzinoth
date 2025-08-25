@@ -102,6 +102,29 @@ export const translations = {
       }
     },
 
+    // Testimonials Section
+    testimonials: {
+      title: "Real Student Feedback",
+      subtitle: "What my students say after coaching sessions",
+      readyResults: "Ready to get similar results?",
+      choosePlan: "Choose Your Plan",
+      translationNote: "These reviews are automatically translated",
+      examples: [
+        {
+          name: "D_OP_SHOT",
+          feedback: "For me it was a very good session. He managed to resolve the doubts I had and gave me the best guidance so I could increase my ELO. I'm sure that if @azzinoth continues like this they will get even better."
+        },
+        {
+          name: "venxsh",
+          feedback: "I had an awesome experience working with @azzinoth! He quickly identified the areas I needed to improve, therefore, I was able to learn a lot. All my questions were answered and the feedback I received was generalized (what I should keep in mind as a top laner) but I've also received feedback about the way I play the game (my mistakes, laning phase, what should I do in this case? what item has the most priority in this specific game? how can I improve after the coaching session?). I've noticed a big difference in how I want to approach the game and I'm feeling more confident now."
+        },
+        {
+          name: "MonotoneJones",
+          feedback: "I enjoyed the coaching session. I learned some things I was lacking. I learned a ton about Volibear. I wish I had more time and more games to review to learn even more. I think the biggest help for me was rune choices when and why and same for builds. Helping understand the playstyle that works for me and champs to pick if Voli is banned or just not right for the team at the time."
+        }
+      ]
+    },
+
     // Success Page
     success: {
       title: "Payment Successful!",
@@ -167,14 +190,15 @@ export const translations = {
       afterJoiningDiscord: "After Joining Discord",
       onceInChannel: "Once you're in your private Discord channel:",
       proTip: "Pro Tip:",
-      detailedInstructions: "All detailed instructions are waiting for you in your private Discord channel!"
+      detailedInstructions: "All detailed instructions are waiting for you in your private Discord channel!",
+      privateChannelAccess: "Access your private Discord channel below for all instructions and next steps!"
     },
 
     // Footer
     footer: {
       title: "AZZINOTH COACHING",
       subtitle: "Ready to dominate the toplane and climb to new heights?",
-      copyright: "© 2024 Rift Master Coaching. All rights reserved. • League of Legends is a trademark of Riot Games, Inc."
+      copyright: "© 2024 Azzinoth's Coaching. All rights reserved. • League of Legends is a trademark of Riot Games, Inc."
     }
   },
   
@@ -271,11 +295,34 @@ export const translations = {
     aboutMe: {
       title: "À Propos de Moi",
       content: {
-        intro: "Salut, je suis Azzinoth ! Je joue à League depuis la Saison 5, mais pendant des années j'étais juste un joueur casual. Mon vrai background compétitif vient de World of Warcraft, où j'ai atteint le Top 30 Chaman Amélioration dans les arènes (Mode PvP sur Wow).",
+        intro: "Salut, je suis Azzinoth ! Je joue à League depuis la Saison 5, mais pendant des années j'étais juste un joueur casual. Mon vrai background compétitif vient de World of Warcraft, où j'ai atteint le Top 30 Chaman Amélioration en arènes (Mode PvP sur Wow).",
         transformation: "Il y a 6-7 mois quand j'ai décidé de prendre League au sérieux. Je suis passé de Plat 4 à Master en une seule saison.",
         passion: "Le gaming n'est pas juste mon hobby - c'est ma passion et je veux en vivre. Ce qui me motive le plus, c'est partager mes connaissances et aider les autres à s'améliorer. Je crois que mon approche unique du jeu résonne avec les joueurs qui veulent trouver leur propre manière d'approcher le jeu..",
         philosophy: "Mon style de coaching se concentre sur l'amélioration des connaissances macro, la conaissance des matchups, et le perfectionnement d'une stratégie simple - les mêmes principes qui m'ont aidé à dominer dans les arènes WoW et à climb si rapidement sur League."
       }
+    },
+
+    // Testimonials Section
+    testimonials: {
+      title: "Avis de Mes Étudiants",
+      subtitle: "Ce que disent mes étudiants après les sessions de coaching",
+      readyResults: "Prêt à obtenir des résultats similaires ?",
+      choosePlan: "Choisir Ton Plan",
+      translationNote: "Ces avis sont traduits automatiquement",
+      examples: [
+        {
+          name: "D_OP_SHOT",
+          feedback: "Pour moi c'était une très bonne session. Il a réussi à résoudre les doutes que j'avais et m'a donné les meilleurs conseils pour que je puisse augmenter mon ELO. Je suis sûr que si @azzinoth continue comme ça ils vont devenir encore meilleurs."
+        },
+        {
+          name: "venxsh",
+          feedback: "J'ai eu une expérience fantastique en travaillant avec @azzinoth ! Il a rapidement identifié les domaines que je devais améliorer, par conséquent, j'ai pu beaucoup apprendre. Toutes mes questions ont eu des réponses et les retours que j'ai reçus étaient généralisés (ce que je devrais garder en tête en tant que top laner) mais j'ai aussi reçu des retours sur ma façon de jouer (mes erreurs, phase de lane, que devrais-je faire dans ce cas ? quel objet a le plus de priorité dans cette partie spécifique ? comment puis-je m'améliorer après la session de coaching ?). J'ai remarqué une grande différence dans ma façon d'aborder le jeu et je me sens plus confiant maintenant."
+        },
+        {
+          name: "MonotoneJones",
+          feedback: "J'ai apprécié la session de coaching. J'ai appris des choses qui me manquaient. J'ai appris énormément sur Volibear. J'aurais aimé avoir plus de temps et plus de parties à analyser pour apprendre encore plus. Je pense que la plus grande aide pour moi était les choix de runes quand et pourquoi et pareil pour les builds. Aider à comprendre le style de jeu qui fonctionne pour moi et les champions à choisir si Voli est banni ou juste pas adapté à l'équipe à ce moment."
+        }
+      ]
     },
 
     // Success Page
@@ -343,14 +390,15 @@ export const translations = {
       afterJoiningDiscord: "Après avoir rejoint Discord",
       onceInChannel: "Une fois dans votre canal Discord privé :",
       proTip: "Conseil :",
-      detailedInstructions: "Toutes les instructions détaillées vous attendent dans votre canal Discord privé !"
+      detailedInstructions: "Toutes les instructions détaillées vous attendent dans votre canal Discord privé !",
+      privateChannelAccess: "Accédez à votre canal Discord privé ci-dessous pour toutes les instructions et prochaines étapes !"
     },
 
     // Footer
     footer: {
       title: "COACHING AZZINOTH",
       subtitle: "Prêt à dominer la toplane et atteindre de nouveaux sommets ?",
-      copyright: "© 2024 Rift Master Coaching. Tous droits réservés. • League of Legends est une marque déposée de Riot Games, Inc."
+      copyright: "© 2024 Azzinoth's Coaching. Tous droits réservés. • League of Legends est une marque déposée de Riot Games, Inc."
     }
   }
 } as const;

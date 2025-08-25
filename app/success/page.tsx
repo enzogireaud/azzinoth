@@ -94,7 +94,7 @@ function SuccessContent() {
                 {planData.title}
               </h2>
               <p className="text-green-400 text-sm">
-                Access your private Discord channel below for all instructions and next steps!
+                {t.success.privateChannelAccess}
               </p>
             </div>
           </div>
@@ -148,7 +148,7 @@ function SuccessContent() {
               </>
             )}
             
-            <div className="text-center">
+            <div className="text-center mt-4">
               <a 
                 href="https://discord.gg/8Wy5BwxKeD"
                 target="_blank"

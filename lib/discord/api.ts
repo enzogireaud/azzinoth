@@ -134,8 +134,24 @@ class DiscordAPI {
       });
 
       console.log('📢 === SENDING WELCOME MESSAGES ===');
-      // Send welcome message
-      await this.sendWelcomeMessage(channel.id, data);
+      console.log('📢 About to send welcome messages to channel:', channel.id);
+      console.log('📢 sendWelcomeMessage function exists?', typeof this.sendWelcomeMessage);
+      console.log('📢 Channel ID type:', typeof channel.id, 'value:', channel.id);
+      console.log('📢 Data object:', JSON.stringify(data, null, 2));
+      
+      try {
+        console.log('📢 CALLING sendWelcomeMessage NOW...');
+        await this.sendWelcomeMessage(channel.id, data);
+        console.log('📢 Welcome messages completed successfully');
+      } catch (error) {
+        console.error('❌ === WELCOME MESSAGE SENDING FAILED ===');
+        console.error('❌ Welcome message sending failed:', error);
+        if (error instanceof Error) {
+          console.error('❌ Welcome message error details:', error.message);
+          console.error('❌ Welcome message error stack:', error.stack);
+        }
+        console.error('❌ === END WELCOME MESSAGE ERROR ===');
+      }
 
       console.log(`✅ Created Discord channel: ${channelName} for ${data.customerEmail}`);
       console.log('🏗️ === DISCORD CHANNEL CREATION COMPLETED ===');
@@ -157,69 +173,28 @@ class DiscordAPI {
   }
 
   private async sendWelcomeMessage(channelId: string, data: CustomerChannelData) {
+    console.log(`💬 === SENDING CONSOLIDATED WELCOME MESSAGE ===`);
+    console.log(`💬 Target channel: ${channelId}`);
+    console.log(`💬 Customer data:`, data);
+    
     try {
-      console.log(`Sending welcome message to channel ${channelId}`);
-      const embed = this.createWelcomeEmbed(data);
+      console.log(`💬 Creating consolidated welcome embed...`);
+      const embed = this.createConsolidatedWelcomeEmbed(data);
+      console.log(`💬 Consolidated embed created`);
       
+      console.log(`💬 Sending welcome message to channel ${channelId}...`);
       const response = await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
         embeds: [embed]
       });
-      console.log(`Welcome message sent successfully to ${channelId}:`, response);
+      console.log(`✅ Consolidated welcome message sent successfully to ${channelId}`);
+      console.log(`💬 === WELCOME MESSAGE COMPLETED ===`);
     } catch (error) {
-      console.error(`Failed to send welcome message to ${channelId}:`, error);
+      console.error(`❌ === WELCOME MESSAGE FAILED ===`);
+      console.error(`❌ Failed to send welcome message to ${channelId}:`, error);
       if (error instanceof Error) {
-        console.error(`Error details:`, error.message);
+        console.error(`❌ Error details:`, error.message);
+        console.error(`❌ Error stack:`, error.stack);
       }
-    }
-
-    // Send plan-specific action steps
-    try {
-      console.log(`Sending action steps to channel ${channelId}`);
-      const actionEmbed = this.createActionStepsEmbed(data);
-      
-      await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
-        embeds: [actionEmbed]
-      });
-      console.log(`Action steps sent successfully to ${channelId}`);
-    } catch (error) {
-      console.error(`Failed to send action steps to ${channelId}:`, error);
-    }
-
-    // Send subscription summary for premium plans
-    if (['premium', 'premium-plus'].includes(data.planType)) {
-      try {
-        console.log(`Sending subscription summary to channel ${channelId}`);
-        const summaryEmbed = this.createSubscriptionSummaryEmbed(data);
-        
-        await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
-          embeds: [summaryEmbed]
-        });
-        console.log(`Subscription summary sent successfully to ${channelId}`);
-      } catch (error) {
-        console.error(`Failed to send subscription summary to ${channelId}:`, error);
-      }
-    }
-
-    // Send additional info message
-    try {
-      console.log(`Sending info message to channel ${channelId}`);
-      const infoEmbed: DiscordEmbed = {
-        title: '💡 Important Information',
-        description: 
-          `**This channel will automatically delete after ${['premium', 'premium-plus'].includes(data.planType) ? '14 days' : '7 days'}.**\n\n` +
-          `🔒 This is your **private channel** - only you and I can see it.\n` +
-          `⚡ I'll respond as quickly as possible.\n` +
-          `❓ Feel free to ask questions anytime!\n\n` +
-          `🎯 **Need immediate help?** Just mention me @Azzinoth`,
-        color: 0xffaa00, // Orange color
-      };
-
-      await this.makeRequest(`/channels/${channelId}/messages`, 'POST', {
-        embeds: [infoEmbed]
-      });
-      console.log(`Info message sent successfully to ${channelId}`);
-    } catch (error) {
-      console.error(`Failed to send info message to ${channelId}:`, error);
     }
   }
 
@@ -514,6 +489,68 @@ class DiscordAPI {
         inline: false
       }
     ];
+
+    return embed;
+  }
+
+  private createConsolidatedWelcomeEmbed(data: CustomerChannelData): DiscordEmbed {
+    const embed: DiscordEmbed = {
+      color: 0x00ff00, // Green color
+      footer: {
+        text: 'Azzinoth Coaching - Master Your Toplane'
+      }
+    };
+
+    switch (data.planType) {
+      case 'simple':
+        embed.title = '⚡ Simple Plan Activated!';
+        embed.description = 
+          `Hey **${data.customerName || 'Champion'}**! Ready to improve your toplane gameplay?\n\n` +
+          `**📁 Send me:** 1 game replay (.rofl file from League client)\n` +
+          `**📝 You'll get:** Detailed written analysis within 24-48 hours\n\n` +
+          `🔒 **Private channel** - only you and I can see this\n` +
+          `⚡ I'll respond quickly - feel free to ask questions anytime!`;
+        break;
+
+      case 'medium':
+        embed.title = '🔥 Medium Plan Activated!';
+        embed.description = 
+          `Hey **${data.customerName || 'Champion'}**! Time to level up your toplane mastery!\n\n` +
+          `**📁 Send me:** Your OP.GG link + 2 game replays\n` +
+          `**📝 You'll get:** Detailed analysis + champion pool advice within 24-48 hours\n\n` +
+          `🔒 **Private channel** - only you and I can see this\n` +
+          `⚡ I'll respond quickly - feel free to ask questions anytime!`;
+        break;
+
+      case 'premium':
+        embed.title = '💎 Premium Plan Activated!';
+        embed.description = 
+          `Hey **${data.customerName || 'Champion'}**! Welcome to live coaching!\n\n` +
+          `**🎤 Your 1-hour session includes:**\n` +
+          `• Discord voice call with screen sharing\n` +
+          `• Live OP.GG review + champion pool discussion\n` +
+          `• Interactive replay analysis together\n\n` +
+          `**📅 Next:** [Book your session](https://calendly.com/enzogireauds/toplane-coaching-1h)\n` +
+          `**🔗 Share:** Your OP.GG profile link here for preparation\n\n` +
+          `💡 **Can't find a suitable time on Calendly?** Just send me a DM here and we'll find a slot together!\n\n` +
+          `🔒 **Private channel** - only you and I can see this`;
+        break;
+
+      case 'premium-plus':
+        embed.title = '👑 Premium+ Plan Activated!';
+        embed.description = 
+          `Hey **${data.customerName || 'Champion'}**! Welcome to the ultimate coaching experience!\n\n` +
+          `**🎤 Your 1.5-hour session includes:**\n` +
+          `• Extended Discord voice call with screen sharing\n` +
+          `• Deep OP.GG analysis + champion pool optimization\n` +
+          `• Multiple replay reviews together\n` +
+          `• **LIVE game spectating** (I watch you play real-time!)\n\n` +
+          `**📅 Next:** [Book your premium session](https://calendly.com/enzogireauds/premium-plan-1h30)\n` +
+          `**🔗 Share:** Your OP.GG profile link here for preparation\n\n` +
+          `💡 **Can't find a suitable time on Calendly?** Just send me a DM here and we'll find a slot together!\n\n` +
+          `🔒 **Private channel** - only you and I can see this`;
+        break;
+    }
 
     return embed;
   }
