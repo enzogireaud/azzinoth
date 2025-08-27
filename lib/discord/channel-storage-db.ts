@@ -90,6 +90,7 @@ class ProductionChannelStorage {
     // Store in memory first (always works)
     this.channels.set(sessionId, info);
     console.log(`🏭 ✅ Stored in memory: ${this.channels.size} total sessions`);
+    console.log(`🏭 Memory keys after storage:`, Array.from(this.channels.keys()));
     
     // Try to persist to file with retries
     let saveSuccess = false;
@@ -98,6 +99,8 @@ class ProductionChannelStorage {
       saveSuccess = await this.saveToFile();
       if (saveSuccess) {
         console.log('🏭 ✅ Successfully persisted to file');
+        // Wait a moment to ensure file write is complete
+        await new Promise(resolve => setTimeout(resolve, 50));
         break;
       } else {
         console.log(`🏭 ❌ File save attempt ${retry + 1} failed`);
@@ -108,13 +111,28 @@ class ProductionChannelStorage {
     
     if (!saveSuccess) {
       console.error('🏭 ⚠️ WARNING: Could not persist to file after 3 attempts. Channel stored in memory only.');
-      // In production, you could send this to an external service here
-      // For now, the in-memory storage will work for the immediate session
     }
     
-    // Verify storage
+    // CRITICAL: Verify storage with immediate retrieval test
+    console.log('🏭 === IMMEDIATE VERIFICATION TEST ===');
     const stored = this.channels.get(sessionId);
-    console.log('🏭 Verification - Channel stored:', stored ? '✅ YES' : '❌ NO');
+    console.log('🏭 Direct memory check - Channel stored:', stored ? '✅ YES' : '❌ NO');
+    if (stored) {
+      console.log('🏭 Direct memory data:', stored);
+    }
+    
+    // Force file reload and test
+    try {
+      await this.loadFromFile();
+      const reloadedStored = this.channels.get(sessionId);
+      console.log('🏭 After file reload - Channel found:', reloadedStored ? '✅ YES' : '❌ NO');
+      if (reloadedStored) {
+        console.log('🏭 Reloaded data:', reloadedStored);
+      }
+    } catch (error) {
+      console.error('🏭 Error during verification reload:', error);
+    }
+    
     console.log('🏭 === STORAGE COMPLETED ===');
     
     return true; // Always return true since in-memory storage succeeded
@@ -124,29 +142,62 @@ class ProductionChannelStorage {
   async getChannel(sessionId: string): Promise<ChannelInfo | null> {
     console.log('🏭 === PRODUCTION CHANNEL RETRIEVAL ===');
     console.log(`🏭 Looking for session: ${sessionId}`);
+    console.log(`🏭 Session ID length: ${sessionId.length}`);
+    console.log(`🏭 Session ID type: ${typeof sessionId}`);
     
     await this.initialize();
     
+    // First check memory without reload
+    console.log('🏭 STEP 1: Checking current memory state...');
+    console.log(`🏭 Current memory size: ${this.channels.size}`);
+    console.log(`🏭 Current memory keys:`, Array.from(this.channels.keys()));
+    const memoryResult = this.channels.get(sessionId);
+    console.log(`🏭 Memory check result: ${memoryResult ? '✅ FOUND' : '❌ NOT FOUND'}`);
+    
     // Always reload from file to get latest data from other processes
+    console.log('🏭 STEP 2: Reloading from file...');
     try {
       await this.loadFromFile();
+      console.log(`🏭 After file reload - memory size: ${this.channels.size}`);
+      console.log(`🏭 After file reload - keys:`, Array.from(this.channels.keys()));
     } catch (error) {
       console.error('🏭 Warning: Could not reload from file, using memory data');
     }
     
+    // Final lookup
+    console.log('🏭 STEP 3: Final lookup...');
     const result = this.channels.get(sessionId) || null;
-    console.log(`🏭 Search result: ${result ? '✅ FOUND' : '❌ NOT FOUND'}`);
-    console.log(`🏭 Available sessions (${this.channels.size}):`, Array.from(this.channels.keys()));
+    console.log(`🏭 Final result: ${result ? '✅ FOUND' : '❌ NOT FOUND'}`);
     
     if (result) {
-      console.log('🏭 Channel info:', result);
+      console.log('🏭 Found channel info:', result);
     } else {
-      console.log('🏭 ⚠️ Session not found in storage');
-      // Debug info
+      console.log('🏭 ⚠️ Session not found - DETAILED DEBUG:');
+      console.log(`🏭 Total sessions in memory: ${this.channels.size}`);
+      
+      // Character-by-character comparison
       for (const [key, info] of this.channels.entries()) {
-        console.log(`🏭 Available: "${key}" (${info.planType}) - Length: ${key.length}`);
+        console.log(`🏭 Comparing with: "${key}"`);
+        console.log(`🏭   Target: "${sessionId}"`);
+        console.log(`🏭   Lengths: ${key.length} vs ${sessionId.length}`);
+        console.log(`🏭   Equal: ${key === sessionId}`);
+        console.log(`🏭   Plan: ${info.planType}`);
+        
+        // Character by character check
+        if (key.length === sessionId.length) {
+          let diff = false;
+          for (let i = 0; i < key.length; i++) {
+            if (key[i] !== sessionId[i]) {
+              console.log(`🏭   Diff at position ${i}: "${key[i]}" vs "${sessionId[i]}"`);
+              diff = true;
+              break;
+            }
+          }
+          if (!diff) {
+            console.log(`🏭   ⚠️ CHARACTERS MATCH BUT === FAILED!`);
+          }
+        }
       }
-      console.log(`🏭 Searching: "${sessionId}" - Length: ${sessionId.length}`);
     }
     
     console.log('🏭 === RETRIEVAL COMPLETED ===');
