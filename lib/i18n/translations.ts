@@ -198,6 +198,8 @@ export const translations = {
     footer: {
       title: "AZZINOTH COACHING",
       subtitle: "Ready to dominate the toplane and climb to new heights?",
+      support: "Need help or have questions?",
+      joinCommunity: "Join our Discord community",
       copyright: "© 2024 Azzinoth's Coaching. All rights reserved. • League of Legends is a trademark of Riot Games, Inc."
     }
   },
@@ -398,6 +400,8 @@ export const translations = {
     footer: {
       title: "COACHING AZZINOTH",
       subtitle: "Prêt à dominer la toplane et atteindre de nouveaux sommets ?",
+      support: "Besoin d'aide ou des questions ?",
+      joinCommunity: "Rejoignez notre communauté Discord",
       copyright: "© 2024 Azzinoth's Coaching. Tous droits réservés. • League of Legends est une marque déposée de Riot Games, Inc."
     }
   }

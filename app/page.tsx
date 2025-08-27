@@ -344,9 +344,27 @@ export default function HomePage() {
               <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">{t.footer.title}</span>
               <Swords className="h-10 w-10 text-cyan-400 ml-4 animate-pulse" />
             </div>
-            <p className="text-cyan-400 text-lg mb-4">
+            <p className="text-cyan-400 text-lg mb-6">
               {t.footer.subtitle}
             </p>
+            
+            {/* Discord Support Link */}
+            <div className="mb-6">
+              <p className="text-gray-300 text-sm mb-3">
+                {t.footer.support}
+              </p>
+              <a 
+                href="https://discord.gg/TFhZcYHb"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:from-blue-500 hover:to-purple-500 transition-all duration-300 shadow-lg shadow-blue-500/20"
+              >
+                <Crown className="h-4 w-4" />
+                {t.footer.joinCommunity}
+                <Zap className="h-4 w-4" />
+              </a>
+            </div>
+            
             <p className="text-gray-500 text-sm">
               {t.footer.copyright}
             </p>
