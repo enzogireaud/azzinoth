@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     // Create Discord channel
     console.log('🏗️ Creating Discord channel...');
     const channelUrl = await discordAPI.createCustomerChannel({
-      planType: planId,
+      planType: planId as 'simple' | 'medium' | 'premium' | 'premium-plus',
       customerEmail,
       orderId: sessionId,
       customerName: customerName || undefined,
