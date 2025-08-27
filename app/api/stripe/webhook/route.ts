@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import { stripe } from '@/lib/payments/stripe';
 import { NextRequest, NextResponse } from 'next/server';
 import { discordAPI } from '@/lib/discord/api';
-import { channelStore } from '@/lib/discord/channel-store';
+import { productionChannelStorage } from '@/lib/discord/channel-storage-db';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -87,28 +87,33 @@ export async function POST(request: NextRequest) {
             if (channelUrl) {
               console.log(`✅ Discord channel created for ${customerEmail}: ${channelUrl}`);
               
-                          // Store channel info for the success page to retrieve
-            console.log('💾 === ABOUT TO STORE CHANNEL INFO ===');
+            // Store channel info for the success page to retrieve - PRODUCTION VERSION
+            console.log('💾 === PRODUCTION CHANNEL STORAGE ===');
             console.log('💾 Session ID:', session.id);
             console.log('💾 Channel URL:', channelUrl);
             console.log('💾 Plan type:', planId);
-            console.log('💾 channelStore instance:', channelStore);
-            console.log('💾 channelStore constructor name:', channelStore.constructor.name);
             
-            channelStore.storeChannel(session.id, {
+            const storeSuccess = await productionChannelStorage.storeChannel(session.id, {
               channelUrl,
               planType: planId,
               customerEmail,
               createdAt: Date.now()
             });
-            console.log(`✅ Channel info stored for session: ${session.id}`);
             
-            // Verify storage worked immediately
-            console.log('🔍 === IMMEDIATE VERIFICATION ===');
-            const storedInfo = channelStore.getChannel(session.id);
-            console.log('🔍 Immediate verification - stored info retrieved:', storedInfo);
-            console.log('🔍 channelStore instance during verification:', channelStore);
-            console.log('💾 === STORAGE VERIFICATION COMPLETED ===');
+            if (storeSuccess) {
+              console.log(`✅ Channel info stored successfully for session: ${session.id}`);
+              
+              // Verify storage worked immediately
+              console.log('🔍 === IMMEDIATE VERIFICATION ===');
+              const storedInfo = await productionChannelStorage.getChannel(session.id);
+              console.log('🔍 Verification result:', storedInfo ? '✅ FOUND' : '❌ NOT FOUND');
+              if (storedInfo) {
+                console.log('🔍 Stored data:', storedInfo);
+              }
+            } else {
+              console.error('❌ Failed to store channel info - but continuing with notification');
+            }
+            console.log('💾 === PRODUCTION STORAGE COMPLETED ===');
               
               // Send notification to you about new customer
               console.log('📢 About to send admin notification...');

@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { channelStore } from '@/lib/discord/channel-store';
+import { productionChannelStorage } from '@/lib/discord/channel-storage-db';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const sessionId = searchParams.get('session');
   
-  console.log('🔍 === CHANNEL LOOKUP API CALLED ===');
+  console.log('🔍 === PRODUCTION CHANNEL LOOKUP API ===');
   console.log('🔍 Raw URL:', request.url);
   console.log(`🔍 Checking for Discord channel with session ID: ${sessionId}`);
-  console.log('🔍 channelStore instance in API:', channelStore);
-  console.log('🔍 channelStore constructor name in API:', channelStore.constructor.name);
   
   if (!sessionId) {
     console.log('❌ No session ID provided');
@@ -19,8 +17,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const channelInfo = channelStore.getChannel(sessionId);
-  console.log(`🔍 Channel store lookup result:`, channelInfo ? 'FOUND' : 'NOT FOUND');
+  const channelInfo = await productionChannelStorage.getChannel(sessionId);
+  console.log(`🔍 Production storage lookup result:`, channelInfo ? 'FOUND' : 'NOT FOUND');
   
   if (channelInfo) {
     console.log(`✅ Channel info found:`, {
@@ -31,7 +29,7 @@ export async function GET(request: NextRequest) {
   }
   
   // Debug: List all stored channels
-  const allChannels = channelStore.listChannels();
+  const allChannels = await productionChannelStorage.listChannels();
   console.log(`📋 All stored channels (${allChannels.length}):`, 
     allChannels.map(([id, info]) => ({ id, planType: info.planType, email: info.customerEmail }))
   );
