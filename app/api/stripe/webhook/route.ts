@@ -2,7 +2,6 @@ import Stripe from 'stripe';
 import { stripe } from '@/lib/payments/stripe';
 import { NextRequest, NextResponse } from 'next/server';
 import { discordAPI } from '@/lib/discord/api';
-import { productionChannelStorage } from '@/lib/discord/channel-storage-db';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -65,65 +64,14 @@ export async function POST(request: NextRequest) {
           console.log(`🔍 Metadata available:`, session.metadata);
           
           if (planId && customerEmail) {
-            console.log('✅ Plan and email found, creating Discord channel...');
+            console.log('✅ Plan and email found - sending admin notification...');
             
-            // Create Discord channel for customer
-            console.log('🏗️ About to call discordAPI.createCustomerChannel with data:', {
-              planType: planId,
-              customerEmail,
-              orderId: session.id,
-              customerName: customerName || undefined,
-            });
-            
-            const channelUrl = await discordAPI.createCustomerChannel({
-              planType: planId as 'simple' | 'medium' | 'premium' | 'premium-plus',
-              customerEmail,
-              orderId: session.id,
-              customerName: customerName || undefined,
-            });
-            
-            console.log('🏗️ discordAPI.createCustomerChannel returned:', channelUrl);
-            
-            if (channelUrl) {
-              console.log(`✅ Discord channel created for ${customerEmail}: ${channelUrl}`);
-              
-            // Store channel info for the success page to retrieve - PRODUCTION VERSION
-            console.log('💾 === PRODUCTION CHANNEL STORAGE ===');
-            console.log('💾 Session ID:', session.id);
-            console.log('💾 Channel URL:', channelUrl);
-            console.log('💾 Plan type:', planId);
-            
-            const storeSuccess = await productionChannelStorage.storeChannel(session.id, {
-              channelUrl,
-              planType: planId,
-              customerEmail,
-              createdAt: Date.now()
-            });
-            
-            if (storeSuccess) {
-              console.log(`✅ Channel info stored successfully for session: ${session.id}`);
-              
-              // Verify storage worked immediately
-              console.log('🔍 === IMMEDIATE VERIFICATION ===');
-              const storedInfo = await productionChannelStorage.getChannel(session.id);
-              console.log('🔍 Verification result:', storedInfo ? '✅ FOUND' : '❌ NOT FOUND');
-              if (storedInfo) {
-                console.log('🔍 Stored data:', storedInfo);
-              }
-            } else {
-              console.error('❌ Failed to store channel info - but continuing with notification');
-            }
-            console.log('💾 === PRODUCTION STORAGE COMPLETED ===');
-              
-              // Send notification to you about new customer
-              console.log('📢 About to send admin notification...');
-              await discordAPI.sendNotification(
-                `🎉 **New Customer!** \n**Plan:** ${planId.toUpperCase()}\n**Email:** ${customerEmail}\n**Channel:** <${channelUrl}>\n**Amount:** €${session.amount_total ? session.amount_total / 100 : 'N/A'}`
-              );
-              console.log('✅ Admin notification sent');
-            } else {
-              console.error('❌ Discord channel creation failed - no URL returned');
-            }
+            // Send admin notification about new payment (channel will be created on-demand)
+            console.log('📢 Sending admin notification for new payment...');
+            await discordAPI.sendNotification(
+              `💳 **New Payment Received!** \n**Plan:** ${planId.toUpperCase()}\n**Email:** ${customerEmail}\n**Name:** ${customerName || 'N/A'}\n**Amount:** €${session.amount_total ? session.amount_total / 100 : 'N/A'}\n**Session:** ${session.id}\n\n✨ Discord channel will be created when customer visits success page.`
+            );
+            console.log('✅ Admin notification sent');
           } else {
             console.error('❌ Missing plan_id or customer_email in session metadata');
             console.error('Available metadata:', session.metadata);

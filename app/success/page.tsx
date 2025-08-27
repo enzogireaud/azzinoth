@@ -12,42 +12,62 @@ function SuccessContent() {
   const { t } = useLanguage();
   const planId = searchParams.get('plan') || 'simple';
   const sessionId = searchParams.get('session_id');
+  const channelParam = searchParams.get('channel'); // Check if channel already in URL
   
-  const [discordChannelUrl, setDiscordChannelUrl] = useState<string | null>(null);
-  const [isLoadingChannel, setIsLoadingChannel] = useState(true);
+  const [discordChannelUrl, setDiscordChannelUrl] = useState<string | null>(channelParam);
+  const [isLoadingChannel, setIsLoadingChannel] = useState(!channelParam); // Don't load if already have channel
+  const [channelError, setChannelError] = useState<string | null>(null);
   
   // Get plan-specific content
   const planKey = planId as keyof typeof t.success.plans;
   const planData = t.success.plans[planKey] || t.success.plans.simple;
 
-  // Poll for Discord channel creation
+  // Create Discord channel on-demand (no polling needed!)
   useEffect(() => {
-    if (!sessionId) {
+    // If we already have channel URL from URL params, we're done
+    if (channelParam) {
+      console.log('✅ Channel URL found in URL params:', channelParam);
+      setDiscordChannelUrl(channelParam);
       setIsLoadingChannel(false);
       return;
     }
 
-    const pollForChannel = async () => {
+    // If no session ID, can't create channel
+    if (!sessionId) {
+      setIsLoadingChannel(false);
+      setChannelError('No session ID found');
+      return;
+    }
+
+    const createChannelOnDemand = async () => {
       try {
-        const response = await fetch(`/api/discord/channel?session=${sessionId}`);
+        console.log('🎯 Creating Discord channel on-demand...');
+        const response = await fetch(`/api/discord/create-channel-on-demand?session=${sessionId}`);
         const data = await response.json();
         
-        if (data.found && data.channelUrl) {
+        if (data.success && data.channelUrl) {
+          console.log('✅ Channel created:', data.channelUrl);
           setDiscordChannelUrl(data.channelUrl);
+          
+          // Update URL with channel parameter so user can share it
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set('channel', data.channelUrl);
+          window.history.pushState({}, '', newUrl.toString());
+          
           setIsLoadingChannel(false);
         } else {
-          // Channel not ready yet, poll again in 2 seconds
-          setTimeout(pollForChannel, 2000);
+          throw new Error(data.error || 'Failed to create channel');
         }
       } catch (error) {
-        console.error('Error polling for Discord channel:', error);
+        console.error('❌ Error creating Discord channel:', error);
+        setChannelError(error instanceof Error ? error.message : 'Unknown error');
         setIsLoadingChannel(false);
       }
     };
 
-    // Start polling after 1 second (give webhook time to process)
-    setTimeout(pollForChannel, 1000);
-  }, [sessionId]);
+    // Start channel creation immediately (no need to wait for webhook)
+    createChannelOnDemand();
+  }, [sessionId, channelParam]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-green-900 relative overflow-hidden flex items-center justify-center p-4">
@@ -111,6 +131,14 @@ function SuccessContent() {
               <div className="text-center py-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto mb-3"></div>
                 <p className="text-gray-300 text-sm">{t.success.creatingChannel}</p>
+              </div>
+            ) : channelError ? (
+              <div className="text-center py-4">
+                <div className="text-red-400 mb-3">❌ Error creating channel</div>
+                <p className="text-gray-400 text-sm mb-4">{channelError}</p>
+                <p className="text-gray-300 text-sm">
+                  Please join our Discord server manually and contact support.
+                </p>
               </div>
             ) : discordChannelUrl ? (
               <div className="text-center space-y-4">
