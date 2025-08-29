@@ -123,7 +123,7 @@ export const translations = {
           feedback: "I enjoyed the coaching session. I learned some things I was lacking. I learned a ton about Volibear. I wish I had more time and more games to review to learn even more. I think the biggest help for me was rune choices when and why and same for builds. Helping understand the playstyle that works for me and champs to pick if Voli is banned or just not right for the team at the time."
         },
         {
-          name: "CasualPlayer",
+          name: "norder_guy",
           feedback: "The coaching with @azzinoth was really great, he pointed out all the major issues I have in a really respectful and comprehensive way so even I, a longtime casual player could understand it. And he really covered everything I need to start getting better, from things like champ pool to trading patterns and wave management. I feel much more motivated to play the game now because I now know what to focus on and I'm very thankful to him!"
         }
       ]
@@ -329,7 +329,7 @@ export const translations = {
           feedback: "J'ai apprécié la session de coaching. J'ai appris des choses qui me manquaient. J'ai appris énormément sur Volibear. J'aurais aimé avoir plus de temps et plus de parties à analyser pour apprendre encore plus. Je pense que la plus grande aide pour moi était les choix de runes quand et pourquoi et pareil pour les builds. Aider à comprendre le style de jeu qui fonctionne pour moi et les champions à choisir si Voli est banni ou juste pas adapté à l'équipe à ce moment."
         },
         {
-          name: "CasualPlayer", 
+          name: "norder_guy", 
           feedback: "Le coaching avec @azzinoth était vraiment génial, il a souligné tous les problèmes majeurs que j'ai d'une manière vraiment respectueuse et complète donc même moi, un joueur casual de longue date pouvais le comprendre. Et il a vraiment couvert tout ce dont j'ai besoin pour commencer à m'améliorer, des choses comme le pool de champions aux patterns de trade et la gestion des vagues. Je me sens beaucoup plus motivé à jouer au jeu maintenant parce que je sais maintenant sur quoi me concentrer et je lui suis très reconnaissant !"
         }
       ]

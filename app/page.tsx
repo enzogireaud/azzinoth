@@ -284,8 +284,8 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Testimonials Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {/* Testimonials Grid - 2x2 Layout for 4 testimonials */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {t.testimonials.examples.map((testimonial, index) => (
               <div key={index} className="group relative">
                 {/* Discord-style Message Card */}
