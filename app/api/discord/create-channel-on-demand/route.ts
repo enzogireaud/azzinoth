@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     // Extract customer details
     const customerEmail = session.customer_details?.email || session.customer_email;
     const customerName = session.customer_details?.name;
-    const planId = session.metadata?.plan_id || 'simple';
+    const planId = session.metadata?.plan_id || 'medium';
     
     console.log('👤 Customer details:');
     console.log(`   Email: ${customerEmail}`);
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     // Create Discord channel
     console.log('🏗️ Creating Discord channel...');
     const channelUrl = await discordAPI.createCustomerChannel({
-      planType: planId as 'simple' | 'medium' | 'premium' | 'premium-plus',
+      planType: planId as 'medium' | 'premium' | 'premium-plus',
       customerEmail,
       orderId: sessionId,
       customerName: customerName || undefined,

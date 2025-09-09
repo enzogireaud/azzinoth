@@ -23,7 +23,7 @@ interface DiscordEmbed {
 }
 
 interface CustomerChannelData {
-  planType: 'simple' | 'medium' | 'premium' | 'premium-plus';
+  planType: 'medium' | 'premium' | 'premium-plus';
   customerEmail: string;
   orderId: string;
   customerName?: string;
@@ -207,8 +207,8 @@ class DiscordAPI {
     };
 
     switch (data.planType) {
-      case 'simple':
-        embed.title = '⚡ Simple Plan Activated!';
+      case 'medium':
+        embed.title = '⚡ Medium Plan Activated!';
         embed.description = 
           `Hey **${data.customerName || 'Champion'}**! Ready to improve your toplane gameplay?\n\n` +
           `**What I need from you:**\n` +
@@ -227,8 +227,8 @@ class DiscordAPI {
         ];
         break;
 
-      case 'medium':
-        embed.title = '🔥 Medium Plan Activated!';
+      case 'premium':
+        embed.title = '🔥 Premium Plan Activated!';
         embed.description = 
           `Hey **${data.customerName || 'Champion'}**! Time to level up your toplane mastery!\n\n` +
           `**What I need from you:**\n` +
@@ -323,7 +323,7 @@ class DiscordAPI {
     };
 
     switch (data.planType) {
-      case 'simple':
+      case 'medium':
         embed.description = `**Ready to improve your toplane gameplay?** Here's what you need to do:`;
         embed.fields = [
           {
@@ -344,7 +344,7 @@ class DiscordAPI {
         ];
         break;
 
-      case 'medium':
+      case 'premium':
         embed.description = `**Time to level up your toplane mastery!** Here's your complete roadmap:`;
         embed.fields = [
           {
@@ -502,8 +502,8 @@ class DiscordAPI {
     };
 
     switch (data.planType) {
-      case 'simple':
-        embed.title = '⚡ Simple Plan Activated!';
+      case 'medium':
+        embed.title = '⚡ Medium Plan Activated!';
         embed.description = 
           `Hey **${data.customerName || 'Champion'}**! Ready to improve your toplane gameplay?\n\n` +
           `**📁 Send me:** 1 game replay (.rofl file from League client)\n` +
@@ -512,8 +512,8 @@ class DiscordAPI {
           `⚡ I'll respond quickly - feel free to ask questions anytime!`;
         break;
 
-      case 'medium':
-        embed.title = '🔥 Medium Plan Activated!';
+      case 'premium':
+        embed.title = '🔥 Premium Plan Activated!';
         embed.description = 
           `Hey **${data.customerName || 'Champion'}**! Time to level up your toplane mastery!\n\n` +
           `**📁 Send me:** Your OP.GG link + 2 game replays\n` +

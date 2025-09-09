@@ -11,8 +11,8 @@ export default function HomePage() {
 
   const plans = [
     {
-      id: 'simple' as const,
-      name: t.plans.simple.name,
+      id: 'medium' as const,
+      name: t.plans.medium.name,
       price: '15€',
       description: t.plans.simple.description,
       icon: Shield,
@@ -21,13 +21,13 @@ export default function HomePage() {
       hasBooking: false
     },
     {
-      id: 'medium' as const,
-      name: t.plans.medium.name,
+      id: 'premium' as const,
+      name: t.plans.premium.name,
       price: '25€',
       description: t.plans.medium.description,
       icon: Swords,
       features: t.plans.medium.features,
-      popular: true,  // Making medium popular since premium is hidden
+      popular: true,  // Making premium popular since it's the higher tier
       hasBooking: false
     }
     // Premium and Premium+ plans temporarily hidden
