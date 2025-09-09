@@ -26,28 +26,29 @@ export default function HomePage() {
       description: t.plans.medium.description,
       icon: Swords,
       features: t.plans.medium.features,
-      popular: false
-    },
-    {
-      id: 'premium' as const,
-      name: t.plans.premium.name,
-      price: '40€',
-      description: t.plans.premium.description,
-      icon: Zap,
-      features: t.plans.premium.features,
-      popular: true,
-      hasBooking: true
-    },
-    {
-      id: 'premium-plus' as const,
-      name: t.plans.premiumPlus.name,
-      price: '60€',
-      description: t.plans.premiumPlus.description,
-      icon: Crown,
-      features: t.plans.premiumPlus.features,
-      popular: false,
-      hasBooking: true
+      popular: true  // Making medium popular since premium is hidden
     }
+    // Premium and Premium+ plans temporarily hidden
+    // {
+    //   id: 'premium' as const,
+    //   name: t.plans.premium.name,
+    //   price: '40€',
+    //   description: t.plans.premium.description,
+    //   icon: Zap,
+    //   features: t.plans.premium.features,
+    //   popular: true,
+    //   hasBooking: true
+    // },
+    // {
+    //   id: 'premium-plus' as const,
+    //   name: t.plans.premiumPlus.name,
+    //   price: '60€',
+    //   description: t.plans.premiumPlus.description,
+    //   icon: Crown,
+    //   features: t.plans.premiumPlus.features,
+    //   popular: false,
+    //   hasBooking: true
+    // }
   ];
 
   return (
@@ -95,7 +96,7 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {plans.map((plan) => {
               const IconComponent = plan.icon;
               return (
