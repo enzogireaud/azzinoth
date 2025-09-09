@@ -17,7 +17,8 @@ export default function HomePage() {
       description: t.plans.simple.description,
       icon: Shield,
       features: t.plans.simple.features,
-      popular: false
+      popular: false,
+      hasBooking: false
     },
     {
       id: 'medium' as const,
@@ -26,7 +27,8 @@ export default function HomePage() {
       description: t.plans.medium.description,
       icon: Swords,
       features: t.plans.medium.features,
-      popular: true  // Making medium popular since premium is hidden
+      popular: true,  // Making medium popular since premium is hidden
+      hasBooking: false
     }
     // Premium and Premium+ plans temporarily hidden
     // {
