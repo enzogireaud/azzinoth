@@ -12,7 +12,6 @@ export const translations = {
     // Plans
     plansTitle: "Choose Your Coaching Plan",
     plansSubtitle: "From fundamentals to advanced strategies - find the perfect coaching package for your skill level and goals.",
-    mostPopular: "MOST POPULAR",
     
     // Plan Details
     plans: {
@@ -74,19 +73,19 @@ export const translations = {
     // How it Works
     howItWorks: {
       title: "How It Works",
-      subtitle: "Simple 3-step process to get personalized coaching tailored to your needs",
+      subtitle: "Simple 3-step process to get personalized coaching and climb faster",
       steps: [
         {
           title: "Choose Your Plan",
-          description: "Select the coaching package that matches your current level and learning goals."
+          description: "Select between Diamond or Challenger tier coaching analysis to match your ambitions."
         },
         {
-          title: "Share Your Info", 
-          description: "Provide your OP.GG profile and game replays, or book a live coaching session."
+          title: "Share Your Games", 
+          description: "Provide your OP.GG profile and game replays through our private Discord channel."
         },
         {
-          title: "Level Up Your Game",
-          description: "Receive detailed analysis, live coaching, and proven strategies to climb the ladder."
+          title: "Get Your Analysis",
+          description: "Receive in-depth written feedback with actionable strategies to improve your gameplay."
         }
       ]
     },
@@ -216,12 +215,11 @@ export const translations = {
       masterTier: "TIER MASTER",
       toplaneSpealist: "SPÉCIALISTE TOPLANE"
     },
-    heroDescription: "Prêt à dominer ta lane et enfin climb ? Fais-toi coacher par un main toplane Master.",
+    heroDescription: "Prêt à dominer ta lane et climb efficacement ? Reçois une analyse détaillée de ton gameplay par un main toplane Master tier.",
     
     // Plans
-    plansTitle: "Choisis Ton Plan de Coaching",
-    plansSubtitle: "Des fondamentaux aux stratégies avancées - trouve le package de coaching parfait pour ton niveau et tes objectifs.",
-    mostPopular: "PLUS POPULAIRE",
+    plansTitle: "Choisis Ton Plan",
+    plansSubtitle: "Analyse approfondie de ton gameplay pour identifier tes points faibles et progresser rapidement.",
     
     // Plan Details
     plans: {
@@ -237,12 +235,12 @@ export const translations = {
       },
       medium: {
         name: "Plan Classique",
-        description: "Analyse complète avec insights sur les champions",
+        description: "Analyse complète pour identifier tes erreurs",
         features: [
-          "Analyse OP.GG",
-          "Analyse de deux parties",
-          "Retours détaillés sur le gameplay",
-          "Conseils d'ajustement du champion pool",
+          "Analyse de ton OP.GG",
+          "Review de deux parties",
+          "Conseils détaillés sur ton gameplay",
+          "Optimisation de ton champion pool",
           "Analyse écrite livrée sous 24h"
         ]
       },
@@ -280,19 +278,19 @@ export const translations = {
     // How it Works
     howItWorks: {
       title: "Comment Ça Marche",
-      subtitle: "Processus simple en 3 étapes pour obtenir un coaching personnalisé adapté à tes besoins",
+      subtitle: "Un processus simple en 3 étapes pour progresser rapidement",
       steps: [
         {
           title: "Choisis Ton Plan",
-          description: "Sélectionne le package de coaching qui correspond à ton niveau actuel et à tes objectifs d'apprentissage."
+          description: "Sélectionne entre une analyse niveau Diamant ou Challenger selon tes ambitions."
         },
         {
-          title: "Partage Tes Infos",
-          description: "Fournis ton profil OP.GG et tes replays de partie, ou réserve une session de coaching en direct."
+          title: "Partage Tes Games",
+          description: "Envoie ton profil OP.GG et tes replays via notre canal Discord privé."
         },
         {
-          title: "Améliore Ton Jeu",
-          description: "Reçois une analyse détaillée, du coaching en direct, et des stratégies éprouvées pour grimper l'échelle."
+          title: "Reçois Ton Analyse",
+          description: "Obtiens une analyse écrite détaillée avec des conseils concrets pour améliorer ton gameplay."
         }
       ]
     },

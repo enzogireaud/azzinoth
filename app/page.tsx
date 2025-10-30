@@ -3,11 +3,110 @@
 import { Check, Star, Zap, Shield, Swords, Crown, Quote } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/context';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register GSAP plugins
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 
 
 export default function HomePage() {
   const { t } = useLanguage();
+  const mainRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const plansRef = useRef<HTMLDivElement>(null);
+  const howItWorksRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero Header Animation
+      const heroTitle = headerRef.current?.querySelector('.hero-title');
+      if (heroTitle) {
+        gsap.from(heroTitle, {
+          y: -50,
+          opacity: 0,
+          duration: 1,
+          delay: 0.3,
+          ease: 'power3.out',
+        });
+      }
+
+      // Plan Cards Animation
+      gsap.from('.plan-card', {
+        scrollTrigger: {
+          trigger: plansRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+        y: 100,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+      });
+
+      // How It Works Steps
+      gsap.from('.step-card', {
+        scrollTrigger: {
+          trigger: howItWorksRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+        y: 80,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power2.out',
+      });
+
+      // About Section
+      gsap.from('.about-content', {
+        scrollTrigger: {
+          trigger: aboutRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        ease: 'power2.out',
+      });
+
+      // Testimonials
+      gsap.from('.testimonial-card', {
+        scrollTrigger: {
+          trigger: testimonialsRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+        scale: 0.8,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: 'back.out(1.2)',
+      });
+
+      // Floating animation for icons
+      gsap.to('.floating-icon', {
+        y: -10,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: 0.3,
+      });
+
+      // Removed parallax effect on background to keep it fixed
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   const plans = [
     {
@@ -18,7 +117,11 @@ export default function HomePage() {
       icon: Shield,
       features: t.plans.simple.features,
       popular: false,
-      hasBooking: false
+      hasBooking: false,
+      rankImage: '/images/DIAMOND.png',
+      backgroundImage: '/images/DIAMOND_BACKGROUND.jpg',
+      gradientFrom: 'from-blue-600',
+      gradientTo: 'to-cyan-400'
     },
     {
       id: 'premium' as const,
@@ -27,8 +130,12 @@ export default function HomePage() {
       description: t.plans.medium.description,
       icon: Swords,
       features: t.plans.medium.features,
-      popular: true,  // Making premium popular since it's the higher tier
-      hasBooking: false
+      popular: true,
+      hasBooking: false,
+      rankImage: '/images/CHALLENGER.png',
+      backgroundImage: '/images/CHALLENGER_BACKGROUND.png',
+      gradientFrom: 'from-purple-600',
+      gradientTo: 'to-pink-500'
     }
     // Premium and Premium+ plans temporarily hidden
     // {
@@ -54,7 +161,7 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="min-h-screen relative overflow-hidden">
+    <main ref={mainRef} className="min-h-screen relative overflow-hidden">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
@@ -70,7 +177,7 @@ export default function HomePage() {
       <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-gray-900/60 to-black/70"></div>
 
       {/* Header */}
-      <header className="relative z-10 pt-8 pb-4">
+      <header ref={headerRef} className="relative z-10 pt-8 pb-4">
         {/* Language Switcher */}
         <div className="absolute top-6 right-6 z-20">
           <LanguageSwitcher />
@@ -78,8 +185,7 @@ export default function HomePage() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8">
           <div className="flex items-center justify-center">
-            <Swords className="h-16 w-16 text-cyan-400 mr-4" />
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 via-teal-300 to-green-400 bg-clip-text text-transparent">
+            <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 via-teal-300 to-green-400 bg-clip-text text-transparent">
               {t.title}
             </h1>
           </div>
@@ -87,7 +193,7 @@ export default function HomePage() {
       </header>
 
       {/* Pricing Plans */}
-      <section id="coaching-plans" className="relative z-10 py-8">
+      <section ref={plansRef} id="coaching-plans" className="relative z-10 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -98,90 +204,86 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto px-4">
             {plans.map((plan) => {
               const IconComponent = plan.icon;
               return (
-                <div
-                  key={plan.id}
-                  className={`relative bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-sm border-2 rounded-2xl shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 p-6 group flex flex-col h-full ${
-                    plan.popular 
-                      ? 'border-cyan-400 shadow-cyan-500/30' 
-                      : 'border-gray-600 hover:border-cyan-500/50'
-                  }`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-cyan-500 to-teal-400 text-black px-6 py-2 rounded-full text-sm font-bold flex items-center gap-2">
-                        <Star className="h-4 w-4 fill-current" />
-                        {t.mostPopular}
-                      </div>
+                <div key={plan.id} className="plan-card relative">
+                  {/* 3D Card */}
+                  <div className="card-3d">
+                    {/* Card Wrapper with background */}
+                    <div className="card-wrapper">
+                      <img 
+                        src={plan.backgroundImage} 
+                        alt={`${plan.name} background`}
+                        className="cover-image"
+                      />
                     </div>
-                  )}
-                  
-                  <div className="relative z-10 flex flex-col h-full">
-                    <div className="text-center mb-8">
-                      <div className="flex justify-center mb-4">
-                        <div className="p-4 bg-gradient-to-br from-cyan-500/20 to-teal-500/10 rounded-xl border border-cyan-400/30">
+
+                    {/* Rank Character Image (appears on hover) */}
+                    <img 
+                      src={plan.rankImage} 
+                      alt={`${plan.name} rank`}
+                      className="rank-character"
+                    />
+
+                    {/* Card Content */}
+                    <div className="card-content">
+                      {/* Title & Price - Hidden on hover */}
+                      <div className="card-title-section text-center mb-6">
+                        <div className="flex justify-center items-center gap-3 mb-4">
                           <IconComponent className="h-10 w-10 text-cyan-400" />
+                          <h3 className="text-4xl font-bold text-white">
+                            {plan.name}
+                          </h3>
+                        </div>
+                        <div className="text-6xl font-black bg-gradient-to-r from-cyan-400 via-teal-300 to-green-400 bg-clip-text text-transparent">
+                          {plan.price}
                         </div>
                       </div>
-                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
-                        {plan.name}
-                      </h3>
-                      <div className="text-3xl font-bold text-cyan-400 mb-3">{plan.price}</div>
-                      <p className="text-gray-300 text-base">{plan.description}</p>
+
+                      {/* CTA Button */}
+                      <button 
+                        className={`w-full py-4 px-8 rounded-xl font-bold text-base transition-all duration-200 cursor-pointer shadow-xl ${
+                          plan.popular
+                            ? 'bg-gradient-to-r from-cyan-500 to-teal-400 text-black hover:from-cyan-400 hover:to-teal-300 shadow-cyan-500/50 hover:shadow-cyan-400/70 hover:scale-105'
+                            : 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-500 hover:to-cyan-400 hover:scale-105'
+                        }`}
+                        onClick={async () => {
+                          try {
+                            const response = await fetch('/api/stripe/checkout', {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                planId: plan.id,
+                                hasBooking: plan.hasBooking || false,
+                              }),
+                            });
+
+                            if (!response.ok) {
+                              throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+
+                            const data = await response.json();
+                            if (data.url) {
+                              window.location.href = data.url;
+                            } else {
+                              console.error('No URL received from checkout');
+                            }
+                          } catch (error) {
+                            console.error('Error creating checkout session:', error);
+                            alert('Sorry, there was an error. Please try again or contact support.');
+                          }
+                        }}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <Zap className="h-4 w-4" />
+                          {plan.hasBooking ? t.buttons.bookSession : t.buttons.getCoaching}
+                        </span>
+                      </button>
                     </div>
-
-                    <ul className="space-y-3 mb-8 flex-grow">
-                      {plan.features.map((feature, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <Check className="h-5 w-5 text-cyan-400 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-200 text-sm">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <button 
-                      className={`w-full py-3 px-6 rounded-lg font-semibold text-base transition-all duration-200 cursor-pointer ${
-                        plan.popular
-                          ? 'bg-gradient-to-r from-cyan-500 to-teal-400 text-black hover:from-cyan-400 hover:to-teal-300'
-                          : 'bg-gradient-to-r from-gray-700 to-gray-600 text-white hover:from-cyan-600 hover:to-teal-500 border border-gray-500 hover:border-cyan-400'
-                      }`}
-                      onClick={async () => {
-                        try {
-                          const response = await fetch('/api/stripe/checkout', {
-                            method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                              planId: plan.id,
-                              hasBooking: plan.hasBooking || false,
-                            }),
-                          });
-
-                          if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                          }
-
-                          const data = await response.json();
-                          if (data.url) {
-                            window.location.href = data.url;
-                          } else {
-                            console.error('No URL received from checkout');
-                          }
-                        } catch (error) {
-                          console.error('Error creating checkout session:', error);
-                          alert('Sorry, there was an error. Please try again or contact support.');
-                        }
-                      }}
-                    >
-                      <span className="flex items-center justify-center gap-2">
-                        <Zap className="h-4 w-4" />
-                        {plan.hasBooking ? t.buttons.bookSession : t.buttons.getCoaching}
-                      </span>
-                    </button>
                   </div>
                 </div>
               );
@@ -191,7 +293,7 @@ export default function HomePage() {
       </section>
 
       {/* How it Works */}
-      <section className="relative py-20 bg-gradient-to-br from-gray-900 via-black to-gray-800">
+      <section ref={howItWorksRef} className="relative py-20 bg-gradient-to-br from-gray-900 via-black to-gray-800">
         {/* Storm effects */}
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-green-400/10"></div>
         <div className="absolute top-1/2 left-0 w-32 h-32 bg-green-400/10 rounded-full blur-2xl"></div>
@@ -209,7 +311,7 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {t.howItWorks.steps.map((step, index) => (
-              <div key={index} className="text-center group">
+              <div key={index} className="step-card text-center group">
                 <div className="relative mb-6 flex justify-center">
                   <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-400/50 transition-all duration-300">
                     <span className="text-2xl font-bold text-black">{index + 1}</span>
@@ -228,7 +330,7 @@ export default function HomePage() {
       </section>
 
       {/* About Me Section */}
-      <section className="relative z-10 py-16">
+      <section ref={aboutRef} className="relative z-10 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
@@ -236,7 +338,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-sm border border-gray-600 rounded-2xl p-8 lg:p-12">
+          <div className="about-content bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-sm border border-gray-600 rounded-2xl p-8 lg:p-12">
             <div className="space-y-6 text-center">
               <p className="text-gray-200 text-lg leading-relaxed">
                 {t.aboutMe.content.intro}
@@ -256,17 +358,17 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="relative py-20 bg-gradient-to-br from-black via-gray-900 to-black">
+      <section ref={testimonialsRef} className="relative py-20 bg-gradient-to-br from-black via-gray-900 to-black">
         {/* Storm Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-green-400/10"></div>
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-1/3 w-64 h-64 bg-green-400/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
         
         {/* Lightning Accents */}
-        <div className="absolute top-10 right-10 text-green-400/20">
+        <div className="floating-icon absolute top-10 right-10 text-green-400/20">
           <Zap className="h-8 w-8 animate-pulse" />
         </div>
-        <div className="absolute bottom-20 left-10 text-green-500/15">
+        <div className="floating-icon absolute bottom-20 left-10 text-green-500/15">
           <Crown className="h-6 w-6 animate-pulse delay-700" />
         </div>
 
@@ -290,7 +392,7 @@ export default function HomePage() {
           {/* Testimonials Grid - 2x2 Layout for 4 testimonials */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {t.testimonials.examples.map((testimonial, index) => (
-              <div key={index} className="group relative">
+              <div key={index} className="testimonial-card group relative">
                 {/* Discord-style Message Card */}
                 <div className="bg-gradient-to-br from-gray-900/80 to-black/70 rounded-xl border border-gray-700/50 p-6 hover:border-gray-600 transition-all duration-300 shadow-lg h-80 flex flex-col">
                   {/* Discord Header */}
