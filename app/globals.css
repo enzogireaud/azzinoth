@@ -271,3 +271,184 @@
     @apply bg-background text-foreground;
   }
 }
+
+/*
+  ---break---
+*/
+
+/* 3D Card Effect for Plan Cards */
+:root {
+  --card-height: 600px;
+  --card-width: 400px;
+}
+
+.card-3d {
+  width: var(--card-width);
+  height: var(--card-height);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  perspective: 2500px;
+  margin: 40px auto;
+  border-radius: 20px;
+  overflow: visible;
+}
+
+.card-wrapper {
+  transition: all 0.5s;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.card-3d:hover .card-wrapper {
+  transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+  box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+  opacity: 0.3;
+  transition: all 0.5s;
+}
+
+.cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.card-wrapper::before,
+.card-wrapper::after {
+  content: "";
+  opacity: 0;
+  width: 100%;
+  transition: all 0.5s;
+  position: absolute;
+  left: 0;
+  z-index: 1;
+}
+
+.card-wrapper::before {
+  top: 0;
+  height: 100%;
+  opacity: 0;
+  background-image: linear-gradient(
+    to top,
+    transparent 46%,
+    rgba(12, 13, 19, 0.3) 68%,
+    rgba(12, 13, 19, 0.7) 97%
+  );
+}
+
+.card-wrapper::after {
+  bottom: 0;
+  height: 80px;
+  opacity: 1;
+  background-image: linear-gradient(
+    to bottom,
+    transparent 46%,
+    rgba(12, 13, 19, 0.4) 68%,
+    rgba(12, 13, 19, 0.8) 97%
+  );
+}
+
+.card-3d:hover .card-wrapper::before {
+  opacity: 0.3;
+  transition: all 0.5s;
+}
+
+.card-3d:hover .card-wrapper::after {
+  opacity: 0.2;
+  height: 120px;
+  transition: all 0.5s;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  padding: 30px;
+  transition: all 0.5s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 50%, transparent 100%);
+  border-radius: 0 0 20px 20px;
+  min-height: 250px;
+}
+
+.card-3d:hover .card-content {
+  transform: translate3d(0%, -25px, 20px);
+  background: transparent;
+  transition: all 0.5s;
+}
+
+.rank-character {
+  width: 85%;
+  max-width: 350px;
+  height: auto;
+  opacity: 0;
+  transition: all 0.5s;
+  position: absolute;
+  z-index: 15;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.7));
+}
+
+.card-3d:hover .rank-character {
+  opacity: 1;
+  transform: translate(-50%, -50%) translate3d(0%, -20px, 100px) scale(1);
+  transition: all 0.5s;
+}
+
+/* Hide title and price on hover */
+.card-title-section {
+  transition: opacity 0.5s;
+}
+
+.card-3d:hover .card-title-section {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* Keep button visible on hover */
+.card-content button {
+  position: relative;
+  z-index: 20;
+  transition: transform 0.5s !important;
+}
+
+.card-3d:hover .card-content button {
+  transform: scale(1.05);
+}
+
+/* Smooth transitions for GSAP animations */
+.plan-card,
+.step-card,
+.testimonial-card,
+.about-content {
+  will-change: transform, opacity;
+}
+
+/* Enhanced hover effects */
+.step-card:hover {
+  transform: translateY(-5px);
+  transition: transform 0.5s;
+}
+
+.testimonial-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.5s;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
